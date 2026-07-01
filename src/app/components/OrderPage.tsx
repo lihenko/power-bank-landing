@@ -70,7 +70,7 @@ export default function OrderPage() {
 
   return (
     <FormProvider {...methods}>
-      <div id="order" className="mx-auto max-w-lg py-10">
+      <div id="order" className="mx-auto max-w-lg py-10 px-6">
         <h1 className="text-2xl font-semibold mb-6">Оформлення замовлення</h1>
 
         <form

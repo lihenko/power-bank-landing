@@ -69,11 +69,11 @@ export default function Hero() {
             <div className="mt-8 flex items-end gap-4">
 
               <span className="text-5xl font-black text-slate-900">
-                530₴
+                {Number(process.env.NEXT_PUBLIC_PRICE)}₴
               </span>
 
               <span className="text-2xl text-slate-400 line-through">
-                699₴
+                {Number(process.env.NEXT_PUBLIC_OLD_PRICE)}₴
               </span>
 
             </div>

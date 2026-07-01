@@ -23,7 +23,7 @@ export default function StickyButton() {
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white p-4 shadow-2xl md:hidden">
       <div className="mx-auto flex max-w-md items-center justify-between">
         <div>
-          <p className="text-2xl font-bold">530₴</p>
+          <p className="text-2xl font-bold">{Number(process.env.NEXT_PUBLIC_PRICE)}₴</p>
           <p className="text-sm text-green-600">
             Є в наявності
           </p>

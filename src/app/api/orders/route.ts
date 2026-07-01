@@ -56,6 +56,25 @@ export async function POST(req: NextRequest) {
   });
 }
 
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function normalizePhone(raw: string) {
+  const digits = raw.replace(/[^\d]/g, "");
+
+  if (digits.length === 10 && digits.startsWith("0")) {
+    return `+38${digits}`;
+  }
+
+  if (digits.startsWith("380")) return `+${digits}`;
+
+  return digits.startsWith("+") ? raw : `+${digits}`;
+}
+
 async function sendToTelegram(
   fullName: string,
   phone: string,
@@ -70,14 +89,16 @@ async function sendToTelegram(
     throw new Error("Telegram env vars are not set");
   }
 
+  const phoneHref = normalizePhone(phone);
+
   const text = [
     "🛒 Нове замовлення",
     "",
-    `📦 ${productName}`,
-    `💰 ${productPrice} грн`,
-    `👤 ${fullName}`,
-    `📞 ${phone}`,
-    `🚚 ${deliveryText}`,
+    `📦 ${escapeHtml(productName)}`,
+    `💰 ${escapeHtml(productPrice)} грн`,
+    `👤 ${escapeHtml(fullName)}`,
+    `📞 <a href="tel:${phoneHref}">${escapeHtml(phone)}</a>`,
+    `🚚 ${escapeHtml(deliveryText)}`,
   ].join("\n");
 
   const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

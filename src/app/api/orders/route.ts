@@ -145,7 +145,7 @@ async function appendToSheet(
     requestBody: {
       values: [
         [
-          new Date().toLocaleString("uk-UA"),
+          new Date().toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" }),
           data.productName,
           data.productPrice,
           fullName,

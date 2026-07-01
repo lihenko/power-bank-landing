@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "Power Bank Lenyes",
     images: [
       {
-        url: "/images/og.webp",
+        url: "/og.webp",
         width: 1200,
         height: 630,
         alt: "Power Bank Lenyes PX163",

@@ -80,9 +80,11 @@ export default function NovaPoshtaSelect({ control }: Props) {
               role="combobox"
               aria-expanded={cityOpen}
               onClick={() => setCityOpen(true)}
-              className="w-full justify-between font-normal"
+              className="w-full justify-between font-normal min-w-0"
             >
-              {field.value?.name ?? "Оберіть місто"}
+              <span className="truncate text-left">
+                {field.value?.name ?? "Оберіть місто"}
+              </span>
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
 
@@ -134,14 +136,14 @@ export default function NovaPoshtaSelect({ control }: Props) {
                       >
                         <Check
                           className={cn(
-                            "mr-2 h-4 w-4",
+                            "mr-2 h-4 w-4 shrink-0",
                             field.value?.ref === city.ref
                               ? "opacity-100"
                               : "opacity-0"
                           )}
                         />
 
-                        {city.name}
+                        <span className="truncate">{city.name}</span>
                       </CommandItem>
                     ))}
                   </CommandGroup>
@@ -172,9 +174,11 @@ export default function NovaPoshtaSelect({ control }: Props) {
               aria-expanded={warehouseOpen}
               disabled={warehouses.length === 0}
               onClick={() => setWarehouseOpen(true)}
-              className="w-full justify-between font-normal"
+              className="w-full justify-between font-normal min-w-0"
             >
-              {field.value?.name ?? "Оберіть відділення"}
+              <span className="truncate text-left">
+                {field.value?.name ?? "Оберіть відділення"}
+              </span>
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
 
@@ -212,14 +216,14 @@ export default function NovaPoshtaSelect({ control }: Props) {
                         >
                           <Check
                             className={cn(
-                              "mr-2 h-4 w-4",
+                              "mr-2 h-4 w-4 shrink-0",
                               field.value?.ref === warehouse.ref
                                 ? "opacity-100"
                                 : "opacity-0"
                             )}
                           />
 
-                          {warehouse.name}
+                          <span className="truncate">{warehouse.name}</span>
                         </CommandItem>
                       ))}
                   </CommandGroup>

@@ -5,6 +5,7 @@ import PortsSection from "@/app/components/PortsSection";
 import PackageSection from "@/app/components/PackageSection";
 import Faq from "@/app/components/Faq";
 import OrderPage from "@/app/components/OrderPage";
+import Footer from "@/app/components/Footer";
 import StickyButton from "@/app/components/StickyButton";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <PackageSection />
       <Faq />
       <OrderPage />
+      <Footer />
       <StickyButton />
     </>
   );

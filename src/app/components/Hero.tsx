@@ -3,7 +3,7 @@ import { Check, Star } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-b from-slate-50 to-white">
+    <section className="bg-linear-to-b from-slate-50 to-white">
       <div className="mx-auto max-w-7xl px-4 py-10 lg:py-16">
 
         <div className="grid items-center gap-12 lg:grid-cols-2">

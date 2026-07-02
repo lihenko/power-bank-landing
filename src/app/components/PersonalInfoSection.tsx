@@ -1,17 +1,21 @@
 "use client";
 
-import { Control, Controller, useWatch } from "react-hook-form";
+import { useEffect } from "react";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 import { OrderFormData } from "@/app/lib/order-schema";
 import { Input } from "@/components/ui/input";
 
-interface Props {
-  control: Control<OrderFormData>;
-}
-
-export default function PersonalInfoSection({ control }: Props) {
+export default function PersonalInfoSection() {
+  const { control, setValue } = useFormContext<OrderFormData>();
   const delivery = useWatch({ control, name: "delivery" });
   const isUkrPoshta = delivery === "ukrposhta";
+
+  useEffect(() => {
+    if (!isUkrPoshta) {
+      setValue("middleName", "");
+    }
+  }, [isUkrPoshta, setValue]);
 
   return (
     <div className="space-y-4">
@@ -43,25 +47,24 @@ export default function PersonalInfoSection({ control }: Props) {
         )}
       />
 
-      <Controller
-        control={control}
-        name="middleName"
-        render={({ field, fieldState }) => (
-          <div className="space-y-2">
-            <label className="font-medium">
-              По батькові
-              {isUkrPoshta && <span className="text-red-500"> *</span>}
-              {!isUkrPoshta && (
-                <span className="text-muted-foreground font-normal"> (необов&apos;язково)</span>
+      {isUkrPoshta && (
+        <Controller
+          control={control}
+          name="middleName"
+          render={({ field, fieldState }) => (
+            <div className="space-y-2">
+              <label className="font-medium">
+                По батькові
+                <span className="text-red-500"> *</span>
+              </label>
+              <Input {...field} value={field.value ?? ""} placeholder="Наприклад: Григорович" />
+              {fieldState.error && (
+                <p className="text-sm text-red-500">{fieldState.error.message}</p>
               )}
-            </label>
-            <Input {...field} value={field.value ?? ""} placeholder="Наприклад: Григорович" />
-            {fieldState.error && (
-              <p className="text-sm text-red-500">{fieldState.error.message}</p>
-            )}
-          </div>
-        )}
-      />
+            </div>
+          )}
+        />
+      )}
 
       <Controller
         control={control}

@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
             <h3 className="text-2xl font-bold text-white">
-              Повербанк
+              Хітмаркет
             </h3>
 
             <p className="mt-4 max-w-lg leading-7 text-zinc-400">

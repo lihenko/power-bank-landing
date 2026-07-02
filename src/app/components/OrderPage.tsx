@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button";
 import PersonalInfoSection from "./PersonalInfoSection";
 import DeliverySection from "./DeliverySection";
 
+import { Truck, PackageCheck } from "lucide-react";
+
+
 export default function OrderPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,13 +85,15 @@ export default function OrderPage() {
           <input type="hidden" {...register("productPrice")} />
 
           <section className="space-y-4">
-            <h2 className="text-lg font-medium">Контактні дані</h2>
-            <PersonalInfoSection control={control} />
-          </section>
-
-          <section className="space-y-4">
             <h2 className="text-lg font-medium">Доставка</h2>
             <DeliverySection control={control} />
+          </section>
+
+          
+
+          <section className="space-y-4">
+            <h2 className="text-lg font-medium">Контактні дані</h2>
+            <PersonalInfoSection />
           </section>
 
           {Object.keys(errors).length > 0 && (
@@ -104,13 +109,25 @@ export default function OrderPage() {
             </div>
           )}
 
-          <Button
-            type="submit"
-            className="mt-8 cursor-pointer flex h-14 w-full items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white transition hover:bg-slate-800 lg:w-fit lg:px-10"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Відправка..." : "Оформити замовлення"}
-          </Button>
+          <div className="mt-8 space-y-3">
+            <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
+              <PackageCheck className="h-4 w-4" />
+              <span>Залишилось на складі: 7 шт</span>
+            </div>
+
+            <Button
+              type="submit"
+              className="cursor-pointer mx-auto flex h-14 w-full items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white transition hover:bg-slate-800 lg:w-fit lg:px-10"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Відправка..." : "Оформити замовлення"}
+            </Button>
+
+            <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
+              <Truck className="h-4 w-4 text-green-600" />
+              <span>Оплата при отриманні — нічого платити зараз не потрібно</span>
+            </div>
+          </div>
         </form>
       </div>
     </FormProvider>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Truck, PackageCheck } from "lucide-react";
 
 import { orderSchema, OrderFormData } from "@/app/lib/order-schema";
 import { Button } from "@/components/ui/button";
@@ -11,18 +12,21 @@ import { Button } from "@/components/ui/button";
 import PersonalInfoSection from "./PersonalInfoSection";
 import DeliverySection from "./DeliverySection";
 
-import { Truck, PackageCheck } from "lucide-react";
+interface Props {
+  productName: string;
+  price: number;
+  stockCount?: number;
+}
 
-
-export default function OrderPage() {
+export default function OrderPage({ productName, price, stockCount }: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const methods = useForm<OrderFormData>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      productName: "Power Bank Lenyes PX163",
-      productPrice: process.env.NEXT_PUBLIC_PRICE,
+      productName,
+      productPrice: String(price),
       delivery: "nova-poshta",
       lastName: "",
       firstName: "",
@@ -44,21 +48,14 @@ export default function OrderPage() {
   } = methods;
 
   const onSubmit = async (data: OrderFormData) => {
-    console.log("SUBMIT DATA:", data);
-
     setIsSubmitting(true);
-
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (!res.ok) {
-        throw new Error("Помилка відправки замовлення");
-      }
-
+      if (!res.ok) throw new Error("Помилка відправки замовлення");
       router.push("/success");
     } catch (error) {
       console.error(error);
@@ -74,25 +71,19 @@ export default function OrderPage() {
   return (
     <FormProvider {...methods}>
       <div id="order" className="mx-auto max-w-lg py-10 px-6">
-        <h1 className="text-2xl font-semibold mb-6">Оформлення замовлення</h1>
+        <h2 className="text-2xl font-semibold mb-6">Оформлення замовлення</h2>
 
-        <form
-          onSubmit={handleSubmit(onSubmit, onError)}
-          className="space-y-8"
-        >
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8">
           <input type="hidden" {...register("productName")} />
-
           <input type="hidden" {...register("productPrice")} />
 
           <section className="space-y-4">
-            <h2 className="text-lg font-medium">Доставка</h2>
+            <h3 className="text-lg font-medium">Доставка</h3>
             <DeliverySection control={control} />
           </section>
 
-          
-
           <section className="space-y-4">
-            <h2 className="text-lg font-medium">Контактні дані</h2>
+            <h3 className="text-lg font-medium">Контактні дані</h3>
             <PersonalInfoSection />
           </section>
 
@@ -110,10 +101,12 @@ export default function OrderPage() {
           )}
 
           <div className="mt-8 space-y-3">
-            <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
-              <PackageCheck className="h-4 w-4" />
-              <span>Залишилось на складі: 7 шт</span>
-            </div>
+            {typeof stockCount === "number" && (
+              <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
+                <PackageCheck className="h-4 w-4" />
+                <span>Залишилось на складі: {stockCount} шт</span>
+              </div>
+            )}
 
             <Button
               type="submit"

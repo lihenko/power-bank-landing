@@ -11,19 +11,23 @@ import StickyButton from "@/app/components/StickyButton";
 import LiveViewersBadge from "@/app/components/LiveViewersBadge";
 import RecentOrderToast from "@/app/components/RecentOrderToast";
 
+import { lenyesConfig } from "@/app/lib/products/lenyes-px163";
+
+
 export default function Home() {
+  const p = lenyesConfig;
   return (
     <>
-      <Hero />
-      <Features />
-      <CompactSection />
-      <PortsSection />
-      <PackageSection />
-      <ReviewsSection />
-      <Faq />
-      <OrderPage />
+      <Hero {...p.hero} price={p.price} oldPrice={p.oldPrice} />
+      {p.features && <Features {...p.features} />}
+      {p.compact && <CompactSection {...p.compact} />}
+      {p.ports && <PortsSection {...p.ports} />}
+      {p.package && <PackageSection {...p.package} />}
+      {p.reviews && p.reviews.length > 0 && <ReviewsSection reviews={p.reviews} />}
+      {p.faq && p.faq.length > 0 && <Faq items={p.faq} />}
+      <OrderPage productName={p.productName} price={p.price} stockCount={p.stockCount} />
       <Footer />
-      <StickyButton />
+      <StickyButton price={p.price} />
       <LiveViewersBadge />
       <RecentOrderToast />
     </>

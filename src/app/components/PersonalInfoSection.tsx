@@ -55,7 +55,6 @@ export default function PersonalInfoSection() {
             <div className="space-y-2">
               <label className="font-medium">
                 По батькові
-                <span className="text-red-500"> *</span>
               </label>
               <Input {...field} value={field.value ?? ""} placeholder="Наприклад: Григорович" />
               {fieldState.error && (

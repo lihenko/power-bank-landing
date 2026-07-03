@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,9 +16,15 @@ interface Props {
   productName: string;
   price: number;
   stockCount?: number;
+  quantity?: number;
 }
 
-export default function OrderPage({ productName, price, stockCount }: Props) {
+export default function OrderPage({
+  productName,
+  price,
+  stockCount,
+  quantity = 1,
+}: Props) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,6 +33,7 @@ export default function OrderPage({ productName, price, stockCount }: Props) {
     defaultValues: {
       productName,
       productPrice: String(price),
+      quantity,
       delivery: "nova-poshta",
       lastName: "",
       firstName: "",
@@ -44,18 +51,31 @@ export default function OrderPage({ productName, price, stockCount }: Props) {
     handleSubmit,
     control,
     register,
+    setValue,
     formState: { errors },
   } = methods;
 
+  // синхронізує форму, якщо price/quantity змінюються після монтування
+  // (наприклад людина обрала інший бандл)
+  useEffect(() => {
+    setValue("productPrice", String(price));
+    setValue("quantity", quantity);
+  }, [price, quantity, setValue]);
+
   const onSubmit = async (data: OrderFormData) => {
     setIsSubmitting(true);
+
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Помилка відправки замовлення");
+
+      if (!res.ok) {
+        throw new Error("Помилка відправки замовлення");
+      }
+
       router.push("/success");
     } catch (error) {
       console.error(error);
@@ -76,6 +96,7 @@ export default function OrderPage({ productName, price, stockCount }: Props) {
         <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8">
           <input type="hidden" {...register("productName")} />
           <input type="hidden" {...register("productPrice")} />
+          <input type="hidden" {...register("quantity")} />
 
           <section className="space-y-4">
             <h3 className="text-lg font-medium">Доставка</h3>
@@ -101,6 +122,12 @@ export default function OrderPage({ productName, price, stockCount }: Props) {
           )}
 
           <div className="mt-8 space-y-3">
+            {quantity > 1 && (
+              <p className="text-center text-sm text-slate-500">
+                Обрано: {quantity} шт · До сплати: {price}₴
+              </p>
+            )}
+
             {typeof stockCount === "number" && (
               <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
                 <PackageCheck className="h-4 w-4" />

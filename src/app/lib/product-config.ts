@@ -8,6 +8,19 @@ export interface SeoConfig {
   canonicalPath: string;
 }
 
+export interface BundleOption {
+  quantity: number; 
+  bonus: number; 
+  label?: string; 
+}
+
+export interface BundlesConfig {
+  eyebrow?: string;
+  title?: string;
+  unitLabel?: string; 
+  options: BundleOption[];
+}
+
 export interface Review {
   name: string;
   city: string;
@@ -76,6 +89,7 @@ export interface ProductConfig {
   seo: SeoConfig;
   hero: HeroConfig;
   features?: FeaturesConfig;
+  bundles?: BundlesConfig;
   compact?: ImageTextConfig;
   ports?: ImageTextConfig;
   package?: PackageConfig;

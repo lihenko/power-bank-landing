@@ -29,7 +29,14 @@ export async function POST(req: NextRequest) {
   // Відправляємо в Telegram і Google Sheets НЕЗАЛЕЖНО одне від одного.
   // Якщо один впаде — інший все одно спрацює, і замовлення не загубиться.
   const [telegramResult, sheetResult] = await Promise.allSettled([
-    sendToTelegram(fullName, data.phone, deliveryText, data.productName,  data.productPrice),
+    sendToTelegram(
+      fullName,
+      data.phone,
+      deliveryText,
+      data.productName,
+      data.productPrice,
+      data.quantity
+    ),
     appendToSheet(data, fullName, deliveryText),
   ]);
 
@@ -80,7 +87,8 @@ async function sendToTelegram(
   phone: string,
   deliveryText: string,
   productName: string,
-  productPrice: string
+  productPrice: string,
+  quantity: number
 ) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -95,6 +103,7 @@ async function sendToTelegram(
     "🛒 Нове замовлення",
     "",
     `📦 ${escapeHtml(productName)}`,
+    `🔢 Кількість: ${quantity} шт`,
     `💰 ${escapeHtml(productPrice)} грн`,
     `👤 ${escapeHtml(fullName)}`,
     `📞 <a href="tel:${phoneHref}">${escapeHtml(phone)}</a>`,
@@ -140,13 +149,14 @@ async function appendToSheet(
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: sheetId,
-    range: "Sheet1!A:G",
+    range: "Sheet1!A:H",
     valueInputOption: "USER_ENTERED",
     requestBody: {
       values: [
         [
           new Date().toLocaleString("uk-UA", { timeZone: "Europe/Kyiv" }),
           data.productName,
+          data.quantity,
           data.productPrice,
           fullName,
           data.phone,

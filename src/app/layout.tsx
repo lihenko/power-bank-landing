@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ),
 
   title: {
-    default: "Power Bank Lenyes PX163 10000 mAh",
+    default: "Hitmarket - товари для всієї родини",
     template: "%s | Hitmarket",
   },
 

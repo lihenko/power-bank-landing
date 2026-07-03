@@ -11,6 +11,8 @@ export const orderSchema = z
 
     productPrice: z.string().trim().min(1, "Ціна товару обов'язкова"),
 
+    quantity: z.coerce.number().int().min(1).default(1),
+
     delivery: z.enum(["nova-poshta", "ukrposhta"]),
 
     lastName: z.string().trim().min(2, "Вкажіть прізвище"),
@@ -84,4 +86,4 @@ export const orderSchema = z
     }
   });
 
-export type OrderFormData = z.infer<typeof orderSchema>;
+export type OrderFormData = z.input<typeof orderSchema>;

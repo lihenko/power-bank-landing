@@ -9,6 +9,20 @@ export const lenyesConfig: ProductConfig = {
   stockCount: 7,
   viewersRange: { min: 6, max: 14 },
 
+  seo: {
+    title: "Power Bank Lenyes PX163 — доставка по Україні",
+    description:
+      "Компактний повербанк 10000 mAh Lenyes PX163. Два USB-виходи, швидка зарядка. Оплата при отриманні, доставка Новою Поштою по всій Україні.",
+    keywords: [
+      "power bank lenyes",
+      "повербанк купити",
+      "зовнішній акумулятор 10000 mah",
+      "powerbank з доставкою",
+    ],
+    ogImage: "/og.webp",
+    canonicalPath: "/lenyes-px163",
+  },
+
   hero: {
     badgeText: "⚡ Готовий до можливих відключень світла",
     title: "Power Bank\nLenyes PX163",

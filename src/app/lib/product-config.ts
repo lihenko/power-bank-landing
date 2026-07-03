@@ -1,5 +1,13 @@
 import { LucideIcon } from "lucide-react";
 
+export interface SeoConfig {
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage: string;
+  canonicalPath: string;
+}
+
 export interface Review {
   name: string;
   city: string;
@@ -65,6 +73,7 @@ export interface ProductConfig {
   oldPrice?: number;
   stockCount?: number;
 
+  seo: SeoConfig;
   hero: HeroConfig;
   features?: FeaturesConfig;
   compact?: ImageTextConfig;

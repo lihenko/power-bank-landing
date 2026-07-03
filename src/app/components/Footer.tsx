@@ -1,12 +1,21 @@
+import Image from "next/image";
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-zinc-950 text-zinc-300">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <h3 className="text-2xl font-bold text-white">
-              Хітмаркет
-            </h3>
+            <Link href="/">
+              <Image
+                src="/hitmarket-white.webp"
+                alt="HitMarket"
+                width={220}
+                height={70}
+                priority
+              />
+            </Link>
 
             <p className="mt-4 max-w-lg leading-7 text-zinc-400">
               Якісні товари з доставкою по всій Україні. Оплата після отримання,

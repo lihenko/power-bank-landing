@@ -110,8 +110,8 @@ export const kinokiConfig: ProductConfig = {
   package: {
     eyebrow: "Комплектація",
     title: "Що ви отримаєте",
-    description: "10 пластирів у комплекті, ще 1 — у подарунок.",
-    items: ["10 пластирів Kinoki", "+1 пластир у подарунок", "Інструкція із застосування"],
+    description: "10 пластирів у комплекті, ще 1 комплект — у подарунок.",
+    items: ["10 пластирів Kinoki", "+1 комплект у подарунок", "Інструкція із застосування"],
     image: "/kinoki-packed.webp",
     imageAlt: "Комплектація Kinoki",
   },

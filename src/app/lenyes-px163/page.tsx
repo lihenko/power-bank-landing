@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/app/components/Hero";
+import CountdownBanner from "@/app/components/CountdownBanner";
 import Features from "@/app/components/Features";
 import CompactSection from "@/app/components/CompactSection";
 import PortsSection from "@/app/components/PortsSection";
@@ -65,6 +66,7 @@ export default function Home() {
   return (
     <>
       <Hero {...p.hero} price={p.price} oldPrice={p.oldPrice} />
+      <CountdownBanner />
       {p.features && <Features {...p.features} />}
       {p.compact && <CompactSection {...p.compact} />}
       {p.ports && <PortsSection {...p.ports} />}

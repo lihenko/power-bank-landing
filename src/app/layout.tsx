@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -75,6 +76,9 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-white text-slate-900`}>
         {children}
       </body>
+      {process.env.NODE_ENV === "production" && (
+        <GoogleAnalytics gaId="G-XKEGRTR1D9" />
+      )}
     </html>
   );
 }

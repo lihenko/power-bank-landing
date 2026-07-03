@@ -3,6 +3,7 @@ import { Inter, Geist } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import FacebookPixel from '@/app/components/FacebookPixel';
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -74,6 +75,7 @@ export default function RootLayout({
   return (
     <html lang="uk" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body className={`${inter.variable} font-sans antialiased bg-white text-slate-900`}>
+        <FacebookPixel />
         {children}
       </body>
       {process.env.NODE_ENV === "production" && (

@@ -75,7 +75,9 @@ export default function OrderPage({
       if (!res.ok) {
         throw new Error("Помилка відправки замовлення");
       }
-
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead')
+      }
       router.push("/success");
     } catch (error) {
       console.error(error);

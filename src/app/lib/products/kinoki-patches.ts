@@ -74,7 +74,7 @@ export const kinokiConfig: ProductConfig = {
   bundles: {
     eyebrow: "Заощаджуйте прямо зараз",
     title: "Оберіть вигідний комплект",
-    unitLabel: "упаковок",
+    unitLabel: "упаковки",
     options: [
         { quantity: 1, bonus: 1 },
         { quantity: 2, bonus: 2, label: "Найпопулярніше" },

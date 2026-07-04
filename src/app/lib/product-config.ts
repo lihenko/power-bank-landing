@@ -9,16 +9,30 @@ export interface SeoConfig {
 }
 
 export interface BundleOption {
-  quantity: number; 
-  bonus: number; 
-  label?: string; 
+  quantity: number;
+  bonus?: number; 
+  discountPercent?: number; 
+  label?: string;
 }
-
+ 
 export interface BundlesConfig {
   eyebrow?: string;
   title?: string;
-  unitLabel?: string; 
+  unitLabel?: string;
   options: BundleOption[];
+}
+
+interface ProductKitOption {
+  quantity: number;
+  discountPercent: number;
+  label?: string;
+}
+
+interface ProductKit {
+  eyebrow: string;
+  title: string;
+  unitLabel: string;
+  options: ProductKitOption[];
 }
 
 export interface Review {
@@ -90,6 +104,7 @@ export interface ProductConfig {
   hero: HeroConfig;
   features?: FeaturesConfig;
   bundles?: BundlesConfig;
+  kit?: ProductKit;
   compact?: ImageTextConfig;
   ports?: ImageTextConfig;
   package?: PackageConfig;

@@ -30,15 +30,27 @@ export default function BundlesSection({
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {options.map((option, index) => {
-            const totalUnits = option.quantity + option.bonus;
-            const payAmount = option.quantity * price;
-            const regularAmount = totalUnits * price;
+            const bonus = option.bonus ?? 0;
+            const hasDiscount = (option.discountPercent ?? 0) > 0;
+            const totalUnits = option.quantity + bonus;
+
+            // Дві незалежні моделі:
+            // - discountPercent: quantity одиниць, ціна за одиницю знижена на %
+            // - bonus: quantity одиниць платні + bonus безкоштовних
+            const regularAmount = hasDiscount
+              ? option.quantity * price
+              : totalUnits * price;
+
+            const payAmount = hasDiscount
+              ? Math.round(option.quantity * price * (1 - option.discountPercent! / 100))
+              : option.quantity * price;
+
             const savings = regularAmount - payAmount;
             const isSelected = selectedIndex === index;
 
             return (
               <button
-                key={`${option.quantity}-${option.bonus}`}
+                key={`${option.quantity}-${option.bonus ?? 0}-${option.discountPercent ?? 0}`}
                 type="button"
                 onClick={() => onSelect(index, option.quantity, payAmount)}
                 className={`relative rounded-2xl border-2 bg-white p-6 text-left transition hover:shadow-lg ${
@@ -64,23 +76,37 @@ export default function BundlesSection({
                     <Gift size={22} />
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-slate-900">
-                      {option.quantity} + {option.bonus} у подарунок
-                    </p>
-                    <p className="text-sm text-slate-500">
-                      {totalUnits} {unitLabel} за ціною {option.quantity}
-                    </p>
+                    {bonus > 0 ? (
+                      <>
+                        <p className="text-lg font-bold text-slate-900">
+                          {option.quantity} + {bonus} у подарунок
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          {totalUnits} {unitLabel} за ціною {option.quantity}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-lg font-bold text-slate-900">
+                        {option.quantity} {unitLabel}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="mt-4 flex items-end gap-3">
                   <span className="text-2xl font-black text-slate-900">{payAmount}₴</span>
-                  <span className="text-base text-slate-400 line-through">{regularAmount}₴</span>
+                  {savings > 0 && (
+                    <span className="text-base text-slate-400 line-through">
+                      {regularAmount}₴
+                    </span>
+                  )}
                 </div>
 
-                <p className="mt-1 text-sm font-medium text-green-600">
-                  Заощаджуєте {savings}₴
-                </p>
+                {savings > 0 && (
+                  <p className="mt-1 text-sm font-medium text-green-600">
+                    Заощаджуєте {savings}₴
+                  </p>
+                )}
               </button>
             );
           })}

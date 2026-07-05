@@ -4,7 +4,7 @@ import { ProductConfig } from "@/app/lib/product-config";
 export const pressureWasherConfig: ProductConfig = {
   productName: "Акумуляторна мийка високого тиску 10в1",
   productSlug: "pressure-washer",
-  price: 799,
+  price: 835,
   oldPrice: 2130,
   stockCount: 27,
   viewersRange: { min: 8, max: 19 },

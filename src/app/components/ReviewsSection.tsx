@@ -17,7 +17,7 @@ function InitialsAvatar({ name }: { name: string }) {
 
 export default function ReviewsSection({ title = "Відгуки покупців", reviews }: Props) {
   return (
-    <section className="space-y-4">
+    <section className="py-4">
       <div className="container mx-auto px-4">
         <h2 className="text-lg font-medium mb-3">{title}</h2>
         <div className="space-y-3">

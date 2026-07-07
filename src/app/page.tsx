@@ -1,37 +1,29 @@
-import Hero from "@/app/components/Hero";
-import CountdownBanner from "@/app/components/CountdownBanner";
-import Features from "@/app/components/Features";
-import CompactSection from "@/app/components/CompactSection";
-import PortsSection from "@/app/components/PortsSection";
-import PackageSection from "@/app/components/PackageSection";
-import ReviewsSection from "@/app/components/ReviewsSection";
-import Faq from "@/app/components/Faq";
-import OrderPage from "@/app/components/OrderPage";
-import Footer from "@/app/components/Footer";
-import StickyButton from "@/app/components/StickyButton";
-import LiveViewersBadge from "@/app/components/LiveViewersBadge";
-import RecentOrderToast from "@/app/components/RecentOrderToast";
-
-import { lenyesConfig } from "@/app/lib/products/lenyes-px163";
+import { allProducts } from '@/app/lib/products/index';
+import { ProductCard } from '@/app/components/ProductCard';
+import Footer from '@/app/components/Footer';
 
 
 export default function Home() {
-  const p = lenyesConfig;
+
   return (
     <>
-      <Hero {...p.hero} price={p.price} oldPrice={p.oldPrice} />
-      <CountdownBanner />
-      {p.features && <Features {...p.features} />}
-      {p.compact && <CompactSection {...p.compact} />}
-      {p.ports && <PortsSection {...p.ports} />}
-      {p.package && <PackageSection {...p.package} />}
-      {p.reviews && p.reviews.length > 0 && <ReviewsSection reviews={p.reviews} />}
-      {p.faq && p.faq.length > 0 && <Faq items={p.faq} />}
-      <OrderPage productName={p.productName} price={p.price} stockCount={p.stockCount} />
+      <div className="max-w-3xl mx-auto text-center px-4 py-10">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          Товари для дому та здоров'я з доставкою по Україні
+        </h1>
+        <p className="text-gray-600">
+          Обираємо перевірені товари, які реально працюють — від побутової техніки
+          до товарів для здоров'я. Швидка доставка, оплата при отриманні, гарантія якості.
+        </p>
+      </div>
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+          {allProducts.map((product) => (
+            <ProductCard key={product.productSlug} product={product} />
+          ))}
+        </div>
+      </div>
       <Footer />
-      <StickyButton price={p.price} />
-      <LiveViewersBadge />
-      <RecentOrderToast />
     </>
   );
 }

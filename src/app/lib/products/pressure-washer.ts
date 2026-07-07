@@ -2,7 +2,7 @@ import { BatteryCharging, Timer, Droplets, Briefcase } from "lucide-react";
 import { ProductConfig } from "@/app/lib/product-config";
 
 export const pressureWasherConfig: ProductConfig = {
-  productName: "Акумуляторна мийка високого тиску 10в1",
+  productName: "Акумуляторна мийка високого тиску",
   productSlug: "pressure-washer",
   price: 835,
   oldPrice: 2130,

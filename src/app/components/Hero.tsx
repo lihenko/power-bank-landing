@@ -21,6 +21,10 @@ export default function Hero({
   ctaHref = "#order",
   disclaimer,
 }: Props) {
+  const discount =
+  oldPrice && oldPrice > price
+    ? Math.round(((oldPrice - price) / oldPrice) * 100)
+    : null;
   return (
     <section className="bg-linear-to-b from-slate-50 to-white">
       <div className="mx-auto max-w-7xl px-4 py-10 lg:py-16">
@@ -60,6 +64,12 @@ export default function Hero({
                 <span className="text-2xl text-slate-400 line-through">{oldPrice}₴</span>
               )}
             </div>
+
+            {discount && (
+              <span className="inline-flex w-fit rounded-full bg-red-500 px-3 py-1 text-sm font-bold text-white">
+                -{discount}%
+              </span>
+            )}
 
             <a
               href={ctaHref}

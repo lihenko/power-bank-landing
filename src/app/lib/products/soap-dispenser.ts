@@ -6,7 +6,7 @@ import { ProductConfig } from "@/app/lib/product-config";
 export const soapDispenserConfig: ProductConfig = {
   productName: "Сенсорний дозатор для мила",
   productSlug: "soap-dispenser",
-  price: 349,
+  price: 299,
   oldPrice: 499,
   stockCount: 24,
   viewersRange: { min: 8, max: 19 },

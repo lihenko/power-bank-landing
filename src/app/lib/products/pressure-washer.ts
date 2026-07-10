@@ -124,7 +124,14 @@ export const pressureWasherConfig: ProductConfig = {
 
   reviews: [
     {
-      name: "Панасюк Андрій",
+      name: "Анна С.",
+      city: "с. Михайлівка, Сумської області",
+      rating: 5,
+      date: "Вчора",
+      text: "Доброго вечора. Забрали. Вже спробували, все працює.Щиро Вам дякуємо.",
+    },
+    {
+      name: "Андрій П.",
       city: "Дніпро",
       rating: 5,
       date: "1 тиждень тому",

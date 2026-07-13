@@ -13,6 +13,7 @@ import StickyButton from "@/app/components/StickyButton";
 import LiveViewersBadge from "@/app/components/LiveViewersBadge";
 import RecentOrderToast from "@/app/components/RecentOrderToast";
 import HowToOrder from "@/app/components/HowToOrder";
+import { ProductSchema } from "@/app/components/ProductSchema";
 
 import { lenyesConfig } from "@/app/lib/products/lenyes-px163";
 
@@ -65,6 +66,7 @@ export default function Home() {
   const p = lenyesConfig;
   return (
     <>
+      <ProductSchema config={p} />
       <Hero {...p.hero} price={p.price} oldPrice={p.oldPrice} />
       <CountdownBanner />
       {p.features && <Features {...p.features} />}

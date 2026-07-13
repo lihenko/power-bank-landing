@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import Hero from "@/app/components/Hero";
 import CountdownBanner from "@/app/components/CountdownBanner";
-import BundlesSection from "@/app/components/BundlesSection";
 import Features from "@/app/components/Features";
 import CompactSection from "@/app/components/CompactSection";
 import PortsSection from "@/app/components/PortsSection";
 import PackageSection from "@/app/components/PackageSection";
 import ReviewsSection from "@/app/components/ReviewsSection";
 import Faq from "@/app/components/Faq";
-import OrderPage from "@/app/components/OrderPage";
 import Footer from "@/app/components/Footer";
 import StickyButton from "@/app/components/StickyButton";
 import LiveViewersBadge from "@/app/components/LiveViewersBadge";
@@ -17,6 +15,7 @@ import HowToOrder from "@/app/components/HowToOrder";
 import ProductPurchaseFlow from "@/app/components/ProductPurchaseFlow";
 
 import { elektroMuhobijkaConfig } from "@/app/lib/products/elektro-muhobijka";
+import { ProductSchema } from "@/app/components/ProductSchema";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.pp.ua";
 
@@ -67,6 +66,7 @@ export default function Home() {
   const p = elektroMuhobijkaConfig;
   return (
     <>
+      <ProductSchema config={p} />
       <Hero {...p.hero} price={p.price} oldPrice={p.oldPrice} />
       <CountdownBanner />
       {p.features && <Features {...p.features} />}

@@ -16,6 +16,7 @@
     "cmdk": "^1.1.1",
     "googleapis": "^173.0.0",
     "lucide-react": "^1.22.0",
+    "mysql2": "^3.23.3",
     "next": "15.5.19",
     "react": "19.1.0",
     "react-dom": "19.1.0",

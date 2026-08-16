@@ -93,6 +93,16 @@ export interface PackageConfig {
   imageAlt: string;
 }
 
+export interface SpecificationItem {
+  name: string;
+  value: string;
+}
+
+export interface SpecificationsConfig {
+  title: string;
+  items: SpecificationItem[];
+}
+
 export interface ProductConfig {
   productName: string;
   productSlug: string;
@@ -108,6 +118,7 @@ export interface ProductConfig {
   compact?: ImageTextConfig;
   ports?: ImageTextConfig;
   package?: PackageConfig;
+  specifications?: SpecificationsConfig;
   reviews?: Review[];
   faq?: FaqItem[];
 

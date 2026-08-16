@@ -16,11 +16,20 @@ import RecentOrderToast from "@/app/components/RecentOrderToast";
 import HowToOrder from "@/app/components/HowToOrder";
 import { ProductSchema } from "@/app/components/ProductSchema";
 import Specifications from "@/app/components/Specifications";
+import Features from "@/app/components/Features";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
+import type {
+  ProductConfig,
+  FeatureItem,
+} from "@/app/lib/product-config";
+
+
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.pp.ua";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://hitmarket.pp.ua";
+
 
 /*
  * ============================================================
@@ -34,93 +43,6 @@ interface ProductPageProps {
   }>;
 }
 
-/*
- * ============================================================
- * PRODUCT CONFIG
- * ============================================================
- *
- * Це НЕ ProductConfig з product-config.ts.
- *
- * Це структура config, яка реально зберігається
- * у JSON-полі products.config.
- */
-
-interface ProductConfig {
-  seo?: {
-    title?: string;
-    description?: string;
-    keywords?: string[];
-    canonicalPath?: string;
-    ogImage?: string;
-  };
-
-  hero?: {
-    title?: string;
-    badgeText?: string;
-    description?: string;
-    image?: string;
-    imageAlt?: string;
-  };
-
-  features?: {
-    title?: string;
-    eyebrow?: string;
-    items?: Array<{
-      text: string;
-      large?: boolean;
-      title: string;
-      icon?: string;
-    }>;
-  };
-
-  compact?: {
-    eyebrow?: string;
-    title: string;
-    description: string;
-    bullets?: string[];
-    image: string;
-    imageAlt: string;
-  };
-
-  ports?: {
-    eyebrow?: string;
-    title: string;
-    description: string;
-    bullets?: string[];
-    image: string;
-    imageAlt: string;
-  };
-
-  package?: {
-    eyebrow?: string;
-    title?: string;
-    description?: string;
-    items?: string[];
-    image?: string;
-    imageAlt?: string;
-  };
-
-  specifications?: {
-    title: string;
-    items: Array<{
-      name: string;
-      value: string;
-    }>;
-  };
-
-  reviews?: Array<{
-    name: string;
-    city: string;
-    rating: number;
-    date: string;
-    text: string;
-  }>;
-
-  faq?: Array<{
-    question: string;
-    answer: string;
-  }>;
-}
 
 /*
  * ============================================================
@@ -128,21 +50,229 @@ interface ProductConfig {
  * ============================================================
  */
 
-function getConfig(value: unknown): ProductConfig {
+/**
+ * CONFIG у MySQL може прийти:
+ *
+ * - як JSON string
+ * - як вже розпарсений object
+ * - null
+ */
+function getConfig(
+  value: unknown
+): ProductConfig {
+
   if (!value) {
-    return {};
+    return {} as ProductConfig;
   }
 
   if (typeof value === "string") {
+
     try {
-      return JSON.parse(value) as ProductConfig;
+
+      return JSON.parse(
+        value
+      ) as ProductConfig;
+
     } catch {
-      return {};
+
+      return {} as ProductConfig;
+
     }
+
   }
 
   return value as ProductConfig;
 }
+
+
+/**
+ * ============================================================
+ * PRODUCT IMAGE
+ * ============================================================
+ *
+ * Вибирає різні зображення для різних блоків.
+ *
+ * Якщо зображень достатньо:
+ *
+ * 0 -> Hero
+ * 1 -> Compact
+ * 2 -> Ports
+ * 3 -> Package
+ *
+ * Якщо зображень недостатньо —
+ * починаємо повторно використовувати доступні.
+ *
+ * Наприклад:
+ *
+ * 1 фото:
+ * Hero    -> 0
+ * Compact -> 0
+ * Ports   -> 0
+ * Package -> 0
+ *
+ * 2 фото:
+ * Hero    -> 0
+ * Compact -> 1
+ * Ports   -> 0
+ * Package -> 1
+ *
+ * 3 фото:
+ * Hero    -> 0
+ * Compact -> 1
+ * Ports   -> 2
+ * Package -> 0
+ */
+function getSectionImage(
+  images: Array<{
+    local_path: string;
+  }>,
+  index: number
+): string {
+
+  if (images.length === 0) {
+    return "/products/placeholder.webp";
+  }
+
+  return images[
+    index % images.length
+  ]?.local_path ??
+    images[0]?.local_path ??
+    "/products/placeholder.webp";
+}
+
+
+/**
+ * ============================================================
+ * REQUIRED CONFIG HELPERS
+ * ============================================================
+ *
+ * ProductSchema і компоненти магазину очікують
+ * повністю сформовані конфіги.
+ */
+
+
+/**
+ * Features
+ */
+function buildFeatures(
+  config: ProductConfig
+) {
+
+  if (
+    !config.features
+  ) {
+    return undefined;
+  }
+
+  const features =
+    config.features;
+
+  if (
+    !features.items ||
+    features.items.length === 0
+  ) {
+    return undefined;
+  }
+
+  /**
+   * icon у JSON — це string.
+   *
+   * Features.tsx сам перетворює
+   * назву іконки у Lucide компонент.
+   */
+  const items: FeatureItem[] =
+    features.items
+      .filter(
+        (
+          item
+        ): item is typeof item & {
+          icon: string;
+        } =>
+          typeof item.icon === "string" &&
+          item.icon.length > 0
+      )
+      .map(
+        item => ({
+          title:
+            item.title,
+
+          text:
+            item.text,
+
+          large:
+            item.large ?? false,
+
+          icon:
+            item.icon,
+        })
+      );
+
+  if (
+    items.length === 0
+  ) {
+    return undefined;
+  }
+
+  return {
+    eyebrow:
+      features.eyebrow ?? "",
+
+    title:
+      features.title ?? "Основні переваги",
+
+    description:
+      features.description ?? "",
+
+    items,
+  };
+}
+
+
+/**
+ * Package
+ */
+function buildPackage(
+  config: ProductConfig,
+  image: string,
+  productName: string
+) {
+
+  if (
+    !config.package
+  ) {
+    return undefined;
+  }
+
+  const source =
+    config.package;
+
+  return {
+
+    eyebrow:
+      source.eyebrow,
+
+    title:
+      source.title ??
+      "Комплектація",
+
+    description:
+      source.description ??
+      "",
+
+    items:
+      source.items ??
+      [],
+
+    image:
+      image,
+
+    imageAlt:
+      source.imageAlt ??
+      productName,
+
+  };
+}
+
 
 /*
  * ============================================================
@@ -151,28 +281,47 @@ function getConfig(value: unknown): ProductConfig {
  */
 
 export async function generateMetadata(
-  { params }: ProductPageProps
+  {
+    params,
+  }: ProductPageProps
 ): Promise<Metadata> {
-  const { slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const {
+    slug,
+  } = await params;
+
+  const product =
+    await getProductBySlug(
+      slug
+    );
 
   if (!product) {
+
     return {
-      title: "Товар не знайдено",
+
+      title:
+        "Товар не знайдено",
+
       robots: {
         index: false,
         follow: false,
       },
+
     };
+
   }
 
-  const config = getConfig(product.config);
+  const config =
+    getConfig(
+      product.config
+    );
+
 
   const title =
     product.seo_title ||
     config.seo?.title ||
     product.name;
+
 
   const description =
     product.seo_description ||
@@ -180,65 +329,107 @@ export async function generateMetadata(
     product.description ||
     "";
 
+
   const canonicalUrl =
     `${SITE_URL}/product/${product.slug}`;
 
+
   /*
-   * Головне зображення беремо з product_images,
-   * а не з config.hero.image.
+   * OG використовуємо перше
+   * реальне зображення товару.
    */
 
   const mainImage =
     product.images?.[0]?.local_path;
 
-  const ogImage = mainImage
-    ? `${SITE_URL}${mainImage}`
-    : undefined;
+
+  const ogImage =
+    mainImage
+      ? `${SITE_URL}${mainImage}`
+      : undefined;
+
 
   return {
+
     title,
+
     description,
 
     alternates: {
-      canonical: canonicalUrl,
+      canonical:
+        canonicalUrl,
     },
 
     openGraph: {
+
       title,
+
       description,
-      url: canonicalUrl,
-      siteName: "HitMarket",
-      locale: "uk_UA",
-      type: "website",
+
+      url:
+        canonicalUrl,
+
+      siteName:
+        "HitMarket",
+
+      locale:
+        "uk_UA",
+
+      type:
+        "website",
 
       ...(ogImage && {
+
         images: [
           {
-            url: ogImage,
-            width: 1200,
-            height: 630,
-            alt: product.name,
+            url:
+              ogImage,
+
+            width:
+              1200,
+
+            height:
+              630,
+
+            alt:
+              product.name,
           },
         ],
+
       }),
+
     },
 
     twitter: {
-      card: "summary_large_image",
+
+      card:
+        "summary_large_image",
+
       title,
+
       description,
 
       ...(ogImage && {
-        images: [ogImage],
+        images: [
+          ogImage,
+        ],
       }),
+
     },
 
     robots: {
-      index: product.available === 1,
-      follow: true,
+
+      index:
+        product.available === 1,
+
+      follow:
+        true,
+
     },
+
   };
 }
+
 
 /*
  * ============================================================
@@ -247,61 +438,237 @@ export async function generateMetadata(
  */
 
 export default async function ProductPage(
-  { params }: ProductPageProps
+  {
+    params,
+  }: ProductPageProps
 ) {
-  const { slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const {
+    slug,
+  } = await params;
+
+
+  const product =
+    await getProductBySlug(
+      slug
+    );
+
 
   if (!product) {
     notFound();
   }
 
-  const config = getConfig(product.config);
 
   /*
    * ============================================================
-   * IMAGES FROM DATABASE
+   * CONFIG
    * ============================================================
    */
 
-  const images = product.images ?? [];
+  const config =
+    getConfig(
+      product.config
+    );
 
-  const mainImage =
-    images[0]?.local_path ||
-    "/products/placeholder.webp";
+
+  /*
+   * ============================================================
+   * PRODUCT IMAGES
+   * ============================================================
+   */
+
+  const images =
+    product.images ?? [];
+
+
+  /*
+   * ------------------------------------------------------------
+   * Розподіляємо реальні картинки товару.
+   * ------------------------------------------------------------
+   */
+
+  const heroImage =
+    getSectionImage(
+      images,
+      0
+    );
+
+
+  const compactImage =
+    getSectionImage(
+      images,
+      1
+    );
+
+
+  const portsImage =
+    getSectionImage(
+      images,
+      2
+    );
+
+
+  const packageImage =
+    getSectionImage(
+      images,
+      3
+    );
+
 
   /*
    * ============================================================
    * HERO
    * ============================================================
-   *
-   * Дані товару + config.
-   *
-   * Головне фото беремо саме з product_images.
    */
 
   const hero = {
+
     title:
       config.hero?.title ||
       product.name,
 
     badgeText:
       config.hero?.badgeText ||
-      "⭐ Новинка в каталозі",
+      "Практичне рішення",
 
     description:
       config.hero?.description ||
       product.description ||
       "",
 
+    /*
+     * ВАЖЛИВО:
+     *
+     * Тут НЕ беремо config.hero.image.
+     *
+     * Використовуємо перше реальне
+     * зображення товару з БД.
+     */
+
     image:
-      mainImage,
+      heroImage,
 
     imageAlt:
       config.hero?.imageAlt ||
       product.name,
+
   };
+
+
+  /*
+   * ============================================================
+   * FEATURES
+   * ============================================================
+   */
+
+  const features =
+    buildFeatures(
+      config
+    );
+
+
+  /*
+   * ============================================================
+   * COMPACT
+   * ============================================================
+   *
+   * Якщо блок існує —
+   * даємо йому друге зображення.
+   */
+
+  const compact =
+    config.compact
+      ? {
+
+          eyebrow:
+            config.compact.eyebrow,
+
+          title:
+            config.compact.title,
+
+          description:
+            config.compact.description,
+
+          bullets:
+            config.compact.bullets,
+
+          image:
+            compactImage,
+
+          imageAlt:
+            config.compact.imageAlt ||
+            product.name,
+
+        }
+      : undefined;
+
+
+  /*
+   * ============================================================
+   * PORTS
+   * ============================================================
+   */
+
+  const ports =
+    config.ports
+      ? {
+
+          eyebrow:
+            config.ports.eyebrow,
+
+          title:
+            config.ports.title,
+
+          description:
+            config.ports.description,
+
+          bullets:
+            config.ports.bullets,
+
+          image:
+            portsImage,
+
+          imageAlt:
+            config.ports.imageAlt ||
+            product.name,
+
+        }
+      : undefined;
+
+
+  /*
+   * ============================================================
+   * PACKAGE
+   * ============================================================
+   */
+
+  const packageConfig =
+    buildPackage(
+      config,
+      packageImage,
+      product.name
+    );
+
+
+  /*
+   * ============================================================
+   * SPECIFICATIONS
+   * ============================================================
+   */
+
+  const specifications =
+    config.specifications
+      ? {
+
+          title:
+            config.specifications.title,
+
+          items:
+            config.specifications.items,
+
+        }
+      : undefined;
+
 
   /*
    * ============================================================
@@ -312,6 +679,7 @@ export default async function ProductPage(
   const reviews =
     config.reviews ?? [];
 
+
   /*
    * ============================================================
    * FAQ
@@ -321,6 +689,86 @@ export default async function ProductPage(
   const faq =
     config.faq ?? [];
 
+
+  /*
+   * ============================================================
+   * PRODUCT SCHEMA CONFIG
+   * ============================================================
+   *
+   * Передаємо вже нормалізовані
+   * обов'язкові структури.
+   */
+
+  const schemaConfig = {
+
+    productName:
+      product.name,
+
+    productSlug:
+      product.slug,
+
+    price:
+      Number(
+        product.price
+      ),
+
+    oldPrice:
+      product.old_price !== null
+        ? Number(
+            product.old_price
+          )
+        : undefined,
+
+    stockCount:
+      product.available === 1
+        ? 1
+        : 0,
+
+    seo: {
+
+      title:
+        product.seo_title ||
+        config.seo?.title ||
+        product.name,
+
+      description:
+        product.seo_description ||
+        config.seo?.description ||
+        product.description ||
+        "",
+
+      canonicalPath:
+        `/product/${product.slug}`,
+
+      keywords:
+        config.seo?.keywords ??
+        [],
+
+      ogImage:
+        heroImage,
+
+    },
+
+    hero,
+
+    features,
+
+    compact,
+
+    ports,
+
+    package:
+      packageConfig,
+
+    specifications,
+
+    reviews,
+
+    faq,
+
+  };
+
+
   /*
    * ============================================================
    * RENDER
@@ -329,54 +777,17 @@ export default async function ProductPage(
 
   return (
     <>
+
       {/* ================================================== */}
       {/* PRODUCT SCHEMA */}
       {/* ================================================== */}
 
       <ProductSchema
-        config={{
-          productName: product.name,
-          productSlug: product.slug,
-          price: Number(product.price),
-          oldPrice:
-            product.old_price !== null
-              ? Number(product.old_price)
-              : undefined,
-
-          stockCount:
-            product.available === 1
-              ? 1
-              : 0,
-
-          seo: {
-            title:
-              product.seo_title ||
-              config.seo?.title ||
-              product.name,
-
-            description:
-              product.seo_description ||
-              config.seo?.description ||
-              product.description ||
-              "",
-
-            canonicalPath:
-              `/product/${product.slug}`,
-
-            keywords:
-              config.seo?.keywords ?? [],
-
-            ogImage:
-              mainImage,
-          },
-
-          hero: {
-            ...hero,
-          },
-
-          reviews,
-        }}
+        config={
+          schemaConfig
+        }
       />
+
 
       {/* ================================================== */}
       {/* HERO */}
@@ -384,13 +795,22 @@ export default async function ProductPage(
 
       <Hero
         {...hero}
-        price={Number(product.price)}
+
+        price={
+          Number(
+            product.price
+          )
+        }
+
         oldPrice={
           product.old_price !== null
-            ? Number(product.old_price)
+            ? Number(
+                product.old_price
+              )
             : undefined
         }
       />
+
 
       {/* ================================================== */}
       {/* COUNTDOWN */}
@@ -398,79 +818,67 @@ export default async function ProductPage(
 
       <CountdownBanner />
 
+
       {/* ================================================== */}
       {/* FEATURES */}
       {/* ================================================== */}
 
-      {/*
-        Поки НЕ виводимо Features.
+      {features && (
+        <Features
+          {...features}
+        />
+      )}
 
-        У БД icon зараз може бути відсутній або
-        не відповідати LucideIcon, тому блок
-        тимчасово вимкнений.
-      */}
 
       {/* ================================================== */}
       {/* COMPACT */}
       {/* ================================================== */}
 
-      {config.compact && (
+      {compact && (
         <CompactSection
-          {...config.compact}
+          {...compact}
         />
       )}
+
 
       {/* ================================================== */}
       {/* PORTS */}
       {/* ================================================== */}
 
-      {config.ports && (
+      {ports && (
         <PortsSection
-          {...config.ports}
+          {...ports}
         />
       )}
+
 
       {/* ================================================== */}
       {/* PACKAGE */}
       {/* ================================================== */}
 
-      {config.package && (
+      {packageConfig && (
         <PackageSection
+          {...packageConfig}
+        />
+      )}
+
+
+      {/* ================================================== */}
+      {/* SPECIFICATIONS */}
+      {/* ================================================== */}
+
+      {specifications && (
+        <Specifications
           title={
-            config.package.title ||
-            "Комплектація"
+            specifications.title
           }
 
           items={
-            config.package.items ?? []
-          }
-
-          description={
-            config.package.description ?? ""
-          }
-
-          image={
-            config.package.image ||
-            mainImage
-          }
-
-          imageAlt={
-            config.package.imageAlt ||
-            product.name
-          }
-
-          eyebrow={
-            config.package.eyebrow
+            specifications.items
           }
         />
       )}
 
-      {config?.specifications && (
-        <Specifications
-            title={config.specifications.title}
-            items={config.specifications.items}
-        />
-        )}
 
       {/* ================================================== */}
       {/* REVIEWS */}
@@ -478,9 +886,12 @@ export default async function ProductPage(
 
       {reviews.length > 0 && (
         <ReviewsSection
-          reviews={reviews}
+          reviews={
+            reviews
+          }
         />
       )}
+
 
       {/* ================================================== */}
       {/* FAQ */}
@@ -488,9 +899,12 @@ export default async function ProductPage(
 
       {faq.length > 0 && (
         <Faq
-          items={faq}
+          items={
+            faq
+          }
         />
       )}
+
 
       {/* ================================================== */}
       {/* HOW TO ORDER */}
@@ -498,19 +912,36 @@ export default async function ProductPage(
 
       <HowToOrder />
 
+
       {/* ================================================== */}
       {/* ORDER */}
       {/* ================================================== */}
 
       <OrderPage
-        productName={product.name}
-        price={Number(product.price)}
+
+        productName={
+          product.name
+        }
+
+        price={
+          Number(
+            product.price
+          )
+        }
+
         stockCount={
           product.available === 1
-            ? Math.floor(Math.random() * (50 - 5 + 1)) + 5
+            ? Math.floor(
+                Math.random() *
+                  (
+                    50 - 5 + 1
+                  )
+              ) + 5
             : 0
         }
+
       />
+
 
       {/* ================================================== */}
       {/* FOOTER */}
@@ -518,13 +949,19 @@ export default async function ProductPage(
 
       <Footer />
 
+
       {/* ================================================== */}
       {/* STICKY BUTTON */}
       {/* ================================================== */}
 
       <StickyButton
-        price={Number(product.price)}
+        price={
+          Number(
+            product.price
+          )
+        }
       />
+
 
       {/* ================================================== */}
       {/* LIVE VIEWERS */}
@@ -532,11 +969,13 @@ export default async function ProductPage(
 
       <LiveViewersBadge />
 
+
       {/* ================================================== */}
       {/* RECENT ORDER */}
       {/* ================================================== */}
 
       <RecentOrderToast />
+
     </>
   );
 }

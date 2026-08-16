@@ -49,7 +49,7 @@ export interface FaqItem {
 }
 
 export interface FeatureItem {
-  icon: LucideIcon;
+  icon: string;
   title: string;
   text: string;
   large?: boolean;

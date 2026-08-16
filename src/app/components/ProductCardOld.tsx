@@ -7,14 +7,14 @@ interface ProductCardProps {
   product: ProductConfig;
 }
 
-export function ProductCard({
+export function ProductCardOld({
   product,
 }: ProductCardProps) {
 
   return (
 
     <Link
-      href={`/product/${product.productSlug}`}
+      href={`/${product.productSlug}`}
       className="
         group
         block

@@ -1,5 +1,6 @@
 import { allProducts } from '@/app/lib/products/index';
-import { ProductCard } from '@/app/components/ProductCard';
+import { ProductCardOld } from '@/app/components/ProductCardOld';
+import LatestProducts from "@/app/components/LatestProducts";
 import Footer from '@/app/components/Footer';
 
 
@@ -16,10 +17,11 @@ export default function Home() {
           до товарів для здоров'я. Швидка доставка, оплата при отриманні, гарантія якості.
         </p>
       </div>
+      <LatestProducts />
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
           {allProducts.map((product) => (
-            <ProductCard key={product.productSlug} product={product} />
+            <ProductCardOld key={product.productSlug} product={product} />
           ))}
         </div>
       </div>

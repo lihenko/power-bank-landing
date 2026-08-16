@@ -24,7 +24,7 @@ export default async function LatestProducts() {
       <div
         className="
           mx-auto
-          max-w-7xl
+          container
           px-4
           sm:px-6
           lg:px-8

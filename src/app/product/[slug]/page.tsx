@@ -17,6 +17,7 @@ import HowToOrder from "@/app/components/HowToOrder";
 import { ProductSchema } from "@/app/components/ProductSchema";
 import Specifications from "@/app/components/Specifications";
 import Features from "@/app/components/Features";
+import ProductGallery from "@/app/components/ProductGallery";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -856,11 +857,18 @@ export default async function ProductPage(
       {/* PACKAGE */}
       {/* ================================================== */}
 
-      {packageConfig && (
+      
+
+      {packageConfig?.items && packageConfig.items.length > 0 && (
         <PackageSection
           {...packageConfig}
         />
       )}
+
+      <ProductGallery
+        images={images}
+        productName={product.name}
+      />
 
 
       {/* ================================================== */}

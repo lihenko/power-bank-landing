@@ -1,6 +1,7 @@
 import { allProducts } from '@/app/lib/products/index';
 import { ProductCardOld } from '@/app/components/ProductCardOld';
 import LatestProducts from "@/app/components/LatestProducts";
+import CategoriesSection from "@/app/components/CategoriesSection";
 import Footer from '@/app/components/Footer';
 
 
@@ -18,6 +19,7 @@ export default function Home() {
         </p>
       </div>
       <LatestProducts />
+      <CategoriesSection />
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
           {allProducts.map((product) => (

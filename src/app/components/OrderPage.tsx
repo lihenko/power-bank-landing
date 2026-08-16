@@ -146,8 +146,8 @@ export default function OrderPage({
             </Button>
 
             <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
-              <Truck className="h-4 w-4 text-green-600" />
-              <span>Оплата при отриманні — нічого платити зараз не потрібно</span>
+              <Truck className="h-6 w-6 text-green-600 shrink-0" />
+              <span>Передплата за замовлення 100грн, замовлення до 400 грн відправляються за повною передплатою</span>
             </div>
           </div>
         </form>

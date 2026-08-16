@@ -56,25 +56,25 @@ export const kingPowerKPG508Config: ProductConfig = {
       "King Power KPG-508 створений для тих, кому потрібне справді автономне джерело живлення. Він стане незамінним вдома, у подорожах, на природі або під час аварійних відключень електроенергії.",
     items: [
       {
-        icon: BatteryCharging,
+        icon: 'BatteryCharging',
         title: "50000 mAh",
         text: "Величезна ємність дозволяє багаторазово заряджати смартфони, планшети та інші гаджети.",
         large: true,
       },
       {
-        icon: Zap,
+        icon: 'Zap',
         title: "PD + QC3.0",
         text: "Швидка зарядка потужністю до 22.5 Вт для сучасних смартфонів та інших пристроїв.",
         large: true,
       },
       {
-        icon: Usb,
+        icon: 'Usb',
         title: "5 виходів",
         text: "Одночасна зарядка до п'яти пристроїв.",
         large: false,
       },
       {
-        icon: ShieldCheck,
+        icon: 'ShieldCheck',
         title: "Надійний захист",
         text: "Захист від перегріву, короткого замикання та перенапруги.",
         large: false,

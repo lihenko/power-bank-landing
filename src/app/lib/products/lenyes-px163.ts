@@ -48,25 +48,25 @@ export const lenyesConfig: ProductConfig = {
       "Планові та аварійні відключення електроенергії можуть трапитися будь-коли. Компактний Power Bank допоможе зарядити телефон у потрібний момент та залишатися на зв'язку з рідними.",
     items: [
       {
-        icon: BatteryCharging,
+        icon: 'BatteryCharging',
         title: "10000 mAh",
         text: "Оптимальна ємність для повсякденного використання. Допоможе залишатися на зв'язку вдома, у дорозі та під час можливих перебоїв з електропостачанням.",
         large: true,
       },
       {
-        icon: Usb,
+        icon: 'Usb',
         title: "2 USB-виходи",
         text: "Заряджайте два пристрої одночасно.",
         large: true,
       },
       {
-        icon: Smartphone,
+        icon: 'Smartphone',
         title: "Широка сумісність",
         text: "Смартфони, навушники, планшети та інші USB-пристрої.",
         large: false,
       },
       {
-        icon: Briefcase,
+        icon: 'Briefcase',
         title: "Компактний корпус",
         text: "Легко поміщається у сумку або рюкзак.",
         large: false,

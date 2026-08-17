@@ -5,6 +5,7 @@ import { ProductCard } from "@/app/components/ProductCard";
 import CategoryPagination from "./CategoryPagination";
 import {
   getCategoryIdBySlug,
+  getCategorySeoText,
 } from "@/app/lib/category-slugs";
 
 import Footer from "@/app/components/Footer";
@@ -420,6 +421,28 @@ export default async function CategoryPage(
 
             </div>
 
+          )}
+
+          {getCategorySeoText(category.id) && (
+            <section className="mt-16 border-t border-slate-200 pt-10">
+              <div className="max-w-7xl mx-auto">
+
+                <h2 className="text-2xl font-bold text-slate-900">
+                  {category.name}
+                </h2>
+
+                <div className="mt-6 space-y-5 text-base leading-7 text-slate-600">
+                  {getCategorySeoText(category.id)
+                    .split("\n\n")
+                    .map((paragraph, index) => (
+                      <p key={index}>
+                        {paragraph}
+                      </p>
+                    ))}
+                </div>
+
+              </div>
+            </section>
           )}
 
         </div>

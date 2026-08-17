@@ -15,18 +15,11 @@ export default function Home() {
         </h1>
         <p className="text-gray-600">
           Обираємо перевірені товари, які реально працюють — від побутової техніки
-          до товарів для здоров'я. Швидка доставка, оплата при отриманні, гарантія якості.
+          до товарів для здоров'я. Швидка доставка.
         </p>
       </div>
       <LatestProducts />
       <CategoriesSection />
-      <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-          {allProducts.map((product) => (
-            <ProductCardOld key={product.productSlug} product={product} />
-          ))}
-        </div>
-      </div>
       <Footer />
     </>
   );

@@ -53,7 +53,7 @@ export default async function CategoriesSection() {
                 {/* IMAGE */}
                 {/* ================================================== */}
 
-                <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                <div className="relative aspect-1536/1024 overflow-hidden bg-slate-100">
 
                   <Image
                     src={image}

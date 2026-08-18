@@ -1,4 +1,15 @@
+/**
+ * ============================================================
+ * SEARCH PRODUCTS
+ * ============================================================
+ */
+
 import { db } from "@/lib/db";
+
+import {
+  getSearchVariants,
+  normalizeSearchQuery,
+} from "./search-normalizer";
 
 
 /**
@@ -17,6 +28,7 @@ const PRODUCTS_PER_PAGE = 16;
  */
 
 export interface SearchProduct {
+
   id: number;
 
   name: string;
@@ -38,6 +50,7 @@ export interface SearchProduct {
   image: string | null;
 
   imageAlt: string;
+
 }
 
 
@@ -48,6 +61,7 @@ export interface SearchProduct {
  */
 
 export interface SearchProductsResult {
+
   products: SearchProduct[];
 
   total: number;
@@ -55,66 +69,125 @@ export interface SearchProductsResult {
   totalPages: number;
 
   currentPage: number;
+
 }
 
 
 /**
  * ============================================================
- * NORMALIZE QUERY
+ * ESCAPE REGEXP
  * ============================================================
  */
 
-function normalizeSearchQuery(
-  query: string
+function escapeRegexp(
+  value: string
 ): string {
 
-  return query
-    .trim()
-    .replace(/\s+/g, " ");
+  return value.replace(
+    /[\\^$.*+?()[\]{}|]/g,
+    "\\$&"
+  );
+
 }
 
 
 /**
  * ============================================================
- * CREATE BOOLEAN SEARCH QUERY
+ * CREATE REGEXP
+ * ============================================================
+ *
+ * Головне правило:
+ *
+ * шукаємо слово з початку слова.
+ *
+ * "душ"
+ *
+ * знаходить:
+ *
+ * душ
+ * душова
+ * душовий
+ * душем
+ *
+ * НЕ знаходить:
+ *
+ * подушка
+ *
  * ============================================================
  */
 
-function createBooleanSearchQuery(
-  query: string
+function createSearchRegexp(
+  variant: string
 ): string {
 
-  const words =
-    query
-      .split(/\s+/)
-      .map(
-        (word) =>
-          word
-            .replace(
-              /[+\-<>()~*"@]+/g,
-              ""
-            )
-            .trim()
-      )
-      .filter(
-        (word) =>
-          word.length > 0
-      );
+  const value =
+    variant
+      .trim()
+      .toLowerCase();
 
 
   if (
-    words.length === 0
+    value.length === 0
   ) {
+
     return "";
+
   }
 
 
-  return words
-    .map(
-      (word) =>
-        `+${word}*`
+  /*
+   * ----------------------------------------------------------
+   * Фраза
+   *
+   * power bank
+   * ----------------------------------------------------------
+   */
+
+  if (
+    value.includes(" ")
+  ) {
+
+    const words =
+      value
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(
+          escapeRegexp
+        );
+
+
+    if (
+      words.length === 0
+    ) {
+
+      return "";
+
+    }
+
+
+    return (
+      `(^|[^[:alnum:]_])` +
+      words.join(
+        "[[:space:]]+"
+      )
+    );
+
+  }
+
+
+  /*
+   * ----------------------------------------------------------
+   * Одне слово
+   * ----------------------------------------------------------
+   */
+
+  return (
+    `(^|[^[:alnum:]_])` +
+    escapeRegexp(
+      value
     )
-    .join(" ");
+  );
+
 }
 
 
@@ -131,7 +204,7 @@ export async function getSearchProducts(
 
   /**
    * ----------------------------------------------------------
-   * NORMALIZE QUERY
+   * NORMALIZE
    * ----------------------------------------------------------
    */
 
@@ -156,7 +229,7 @@ export async function getSearchProducts(
 
   /**
    * ----------------------------------------------------------
-   * EMPTY SEARCH
+   * EMPTY
    * ----------------------------------------------------------
    */
 
@@ -165,45 +238,195 @@ export async function getSearchProducts(
   ) {
 
     return {
+
       products: [],
+
       total: 0,
+
       totalPages: 0,
+
       currentPage: 1,
+
     };
 
   }
 
 
   /**
-   * ----------------------------------------------------------
-   * BOOLEAN QUERY
-   * ----------------------------------------------------------
+   * ==========================================================
+   * VARIANTS
+   * ==========================================================
    */
 
-  const booleanQuery =
-    createBooleanSearchQuery(
+  const variants =
+    getSearchVariants(
       searchQuery
     );
 
 
   if (
-    booleanQuery.length === 0
+    variants.length === 0
   ) {
 
     return {
+
       products: [],
+
       total: 0,
+
       totalPages: 0,
+
       currentPage: 1,
+
     };
 
   }
 
 
   /**
-   * ----------------------------------------------------------
+   * ==========================================================
+   * SEARCH CONDITIONS
+   * ==========================================================
+   */
+
+  const conditions: string[] = [];
+
+  const conditionParams: string[] = [];
+
+
+  for (
+    const variant of variants
+  ) {
+
+    const regexp =
+      createSearchRegexp(
+        variant
+      );
+
+
+    if (
+      regexp.length === 0
+    ) {
+
+      continue;
+
+    }
+
+
+    /*
+     * --------------------------------------------------------
+     * NAME
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.name) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * DESCRIPTION
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.description) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * SEO TITLE
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.seo_title) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * SEO DESCRIPTION
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.seo_description) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * VENDOR
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.vendor) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * VENDOR CODE
+     * --------------------------------------------------------
+     */
+
+    conditions.push(
+      `
+      LOWER(p.vendor_code) REGEXP ?
+      `
+    );
+
+    conditionParams.push(
+      regexp
+    );
+
+  }
+
+
+  const searchWhere =
+    conditions.join(
+      "\nOR\n"
+    );
+
+
+  /**
+   * ==========================================================
    * OFFSET
-   * ----------------------------------------------------------
+   * ==========================================================
    */
 
   const offset =
@@ -220,49 +443,35 @@ export async function getSearchProducts(
    */
 
   const [
-    countRows
+    countRows,
   ] =
     await db.query(
       `
       SELECT
+
         COUNT(*) AS total
 
-      FROM products
+      FROM products p
 
       WHERE
-        available = 1
+
+        p.available = 1
 
         AND
 
         (
-          MATCH(
-            name,
-            description,
-            seo_title,
-            seo_description,
-            vendor,
-            vendor_code
-          )
-          AGAINST(
-            ?
-            IN BOOLEAN MODE
-          )
-
-          OR
-
-          LOWER(vendor_code) = LOWER(?)
+          ${searchWhere}
         )
       `,
-      [
-        booleanQuery,
-        searchQuery,
-      ]
+      conditionParams
     );
 
 
   const countResult =
     countRows as Array<{
-      total: number | string;
+      total:
+        | number
+        | string;
     }>;
 
 
@@ -273,9 +482,9 @@ export async function getSearchProducts(
 
 
   /**
-   * ----------------------------------------------------------
+   * ==========================================================
    * TOTAL PAGES
-   * ----------------------------------------------------------
+   * ==========================================================
    */
 
   const totalPages =
@@ -286,9 +495,9 @@ export async function getSearchProducts(
 
 
   /**
-   * ----------------------------------------------------------
-   * PAGE OUT OF RANGE
-   * ----------------------------------------------------------
+   * ==========================================================
+   * OUT OF RANGE
+   * ==========================================================
    */
 
   if (
@@ -297,10 +506,15 @@ export async function getSearchProducts(
   ) {
 
     return {
+
       products: [],
+
       total,
+
       totalPages,
+
       currentPage,
+
     };
 
   }
@@ -308,20 +522,183 @@ export async function getSearchProducts(
 
   /**
    * ==========================================================
-   * PRODUCTS
+   * RANKING
    * ==========================================================
-   *
-   * Беремо перше зображення товару.
-   *
-   * sort_order ASC
-   * LIMIT 1
-   *
-   * Це відповідає product_images[0].
+   */
+
+  const rankingParts: string[] = [];
+
+  const rankingParams: string[] = [];
+
+
+  for (
+    const variant of variants
+  ) {
+
+    const regexp =
+      createSearchRegexp(
+        variant
+      );
+
+
+    if (
+      regexp.length === 0
+    ) {
+
+      continue;
+
+    }
+
+
+    const normalizedVariant =
+      normalizeSearchQuery(
+        variant
+      );
+
+
+    /*
+     * --------------------------------------------------------
+     * EXACT NAME
+     * --------------------------------------------------------
+     */
+
+    rankingParts.push(
+      `
+      CASE
+
+        WHEN LOWER(p.name) = ?
+
+        THEN 1000
+
+        ELSE 0
+
+      END
+      `
+    );
+
+    rankingParams.push(
+      normalizedVariant
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * NAME START / WORD
+     * --------------------------------------------------------
+     */
+
+    rankingParts.push(
+      `
+      CASE
+
+        WHEN LOWER(p.name) REGEXP ?
+
+        THEN 500
+
+        ELSE 0
+
+      END
+      `
+    );
+
+    rankingParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * EXACT VENDOR CODE
+     * --------------------------------------------------------
+     */
+
+    rankingParts.push(
+      `
+      CASE
+
+        WHEN LOWER(p.vendor_code) = ?
+
+        THEN 400
+
+        ELSE 0
+
+      END
+      `
+    );
+
+    rankingParams.push(
+      normalizedVariant
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * VENDOR
+     * --------------------------------------------------------
+     */
+
+    rankingParts.push(
+      `
+      CASE
+
+        WHEN LOWER(p.vendor) REGEXP ?
+
+        THEN 200
+
+        ELSE 0
+
+      END
+      `
+    );
+
+    rankingParams.push(
+      regexp
+    );
+
+
+    /*
+     * --------------------------------------------------------
+     * DESCRIPTION
+     * --------------------------------------------------------
+     */
+
+    rankingParts.push(
+      `
+      CASE
+
+        WHEN LOWER(p.description) REGEXP ?
+
+        THEN 50
+
+        ELSE 0
+
+      END
+      `
+    );
+
+    rankingParams.push(
+      regexp
+    );
+
+  }
+
+
+  const rankingSql =
+    rankingParts.length > 0
+      ? rankingParts.join(
+          " + "
+        )
+      : "0";
+
+
+  /**
+   * ==========================================================
+   * PRODUCTS
    * ==========================================================
    */
 
   const [
-    productRows
+    productRows,
   ] =
     await db.query(
       `
@@ -354,87 +731,35 @@ export async function getSearchProducts(
 
         (
           SELECT
+
             pi.local_path
 
           FROM product_images pi
 
           WHERE
+
             pi.product_id = p.id
 
           ORDER BY
+
             pi.sort_order ASC,
+
             pi.id ASC
 
           LIMIT 1
+
         ) AS image,
 
 
         /*
          * ----------------------------------------------------
-         * FULLTEXT RELEVANCE
+         * RELEVANCE
          * ----------------------------------------------------
          */
 
-        MATCH(
-          p.name,
-          p.description,
-          p.seo_title,
-          p.seo_description,
-          p.vendor,
-          p.vendor_code
-        )
-        AGAINST(
-          ?
-          IN BOOLEAN MODE
-        ) AS relevance,
-
-
-        /*
-         * ----------------------------------------------------
-         * EXACT VENDOR CODE
-         * ----------------------------------------------------
-         */
-
-        CASE
-          WHEN LOWER(p.vendor_code) =
-               LOWER(?)
-          THEN 1000
-          ELSE 0
-        END AS vendor_code_match,
-
-
-        /*
-         * ----------------------------------------------------
-         * NAME MATCH
-         * ----------------------------------------------------
-         */
-
-        CASE
-          WHEN LOWER(p.name) LIKE CONCAT(
-            '%',
-            LOWER(?),
-            '%'
-          )
-          THEN 500
-          ELSE 0
-        END AS name_match,
-
-
-        /*
-         * ----------------------------------------------------
-         * VENDOR MATCH
-         * ----------------------------------------------------
-         */
-
-        CASE
-          WHEN LOWER(p.vendor) LIKE CONCAT(
-            '%',
-            LOWER(?),
-            '%'
-          )
-          THEN 100
-          ELSE 0
-        END AS vendor_match
+        (
+          ${rankingSql}
+        ) AS relevance
 
 
       FROM products p
@@ -447,35 +772,11 @@ export async function getSearchProducts(
         AND
 
         (
-
-          MATCH(
-            p.name,
-            p.description,
-            p.seo_title,
-            p.seo_description,
-            p.vendor,
-            p.vendor_code
-          )
-          AGAINST(
-            ?
-            IN BOOLEAN MODE
-          )
-
-          OR
-
-          LOWER(p.vendor_code) =
-          LOWER(?)
-
+          ${searchWhere}
         )
 
 
       ORDER BY
-
-        vendor_code_match DESC,
-
-        name_match DESC,
-
-        vendor_match DESC,
 
         relevance DESC,
 
@@ -487,64 +788,64 @@ export async function getSearchProducts(
       OFFSET ?
       `,
       [
-        /*
-         * relevance
-         */
-        booleanQuery,
 
         /*
-         * exact vendor code
+         * ----------------------------------------------------
+         * RANKING PARAMS
+         * ----------------------------------------------------
          */
-        searchQuery,
+
+        ...rankingParams,
+
 
         /*
-         * name match
+         * ----------------------------------------------------
+         * SEARCH PARAMS
+         * ----------------------------------------------------
          */
-        searchQuery,
+
+        ...conditionParams,
+
 
         /*
-         * vendor match
-         */
-        searchQuery,
-
-        /*
-         * WHERE FULLTEXT
-         */
-        booleanQuery,
-
-        /*
-         * WHERE exact vendor code
-         */
-        searchQuery,
-
-        /*
+         * ----------------------------------------------------
          * LIMIT
+         * ----------------------------------------------------
          */
+
         PRODUCTS_PER_PAGE,
 
+
         /*
+         * ----------------------------------------------------
          * OFFSET
+         * ----------------------------------------------------
          */
+
         offset,
+
       ]
     );
 
 
   /**
-   * ----------------------------------------------------------
+   * ==========================================================
    * TYPE
-   * ----------------------------------------------------------
+   * ==========================================================
    */
 
   const rows =
     productRows as Array<{
+
       id: number;
 
       name: string;
 
       slug: string;
 
-      price: number | string;
+      price:
+        | number
+        | string;
 
       old_price:
         | number
@@ -568,18 +869,21 @@ export async function getSearchProducts(
       image:
         | string
         | null;
+
     }>;
 
 
   /**
    * ==========================================================
-   * MAP PRODUCTS
+   * MAP
    * ==========================================================
    */
 
   const products: SearchProduct[] =
     rows.map(
-      (row) => ({
+      (
+        row
+      ) => ({
 
         id:
           Number(
@@ -649,4 +953,5 @@ export async function getSearchProducts(
     currentPage,
 
   };
+
 }

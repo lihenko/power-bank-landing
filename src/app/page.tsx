@@ -3,6 +3,7 @@ import { ProductCardOld } from '@/app/components/ProductCardOld';
 import LatestProducts from "@/app/components/LatestProducts";
 import CategoriesSection from "@/app/components/CategoriesSection";
 import Footer from '@/app/components/Footer';
+import SearchForm from "@/app/components/SearchForm"
 
 
 export default function Home() {
@@ -18,6 +19,11 @@ export default function Home() {
           до товарів для здоров'я. Швидка доставка.
         </p>
       </div>
+      <section className="py-8">
+      <div className="container mx-auto px-4">
+        <SearchForm />
+      </div>
+    </section>
       <LatestProducts />
       <CategoriesSection />
       <Footer />

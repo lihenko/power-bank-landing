@@ -169,7 +169,7 @@ export async function generateMetadata(
   return {
 
     title:
-      `${category.name} — купити в HitMarket`,
+      `${category.name}`,
 
     description:
       `Купити товари категорії «${category.name}» в HitMarket. Актуальні ціни та товари в наявності.`,

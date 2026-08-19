@@ -41,7 +41,7 @@ export default function Footer() {
         <div className="flex flex-col gap-4 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Всі права захищені.</p>
 
-          <div className="flex-wrap gap-6 hidden">
+          <div className="flex flex-wrap gap-6">
             <a href="/privacy" className="hover:text-white transition">
               Політика конфіденційності
             </a>
@@ -52,6 +52,10 @@ export default function Footer() {
 
             <a href="/returns" className="hover:text-white transition">
               Повернення товару
+            </a>
+
+            <a href="/contacts" className="hover:text-white transition">
+              Контакти
             </a>
           </div>
         </div>

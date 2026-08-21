@@ -58,7 +58,6 @@ export default async function CategoriesSection() {
                   <img
                     src={image}
                     alt={category.name}
-                    fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="
                       (max-width: 640px) 50vw,

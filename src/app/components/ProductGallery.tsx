@@ -92,10 +92,9 @@ export default function ProductGallery({
                             }
                         `}
                         >
-                        <Image
+                        <img
                             src={image.local_path!}
                             alt={`${productName} — ${index + 1}`}
-                            fill
                             className="object-contain p-1"
                             sizes="80px"
                         />

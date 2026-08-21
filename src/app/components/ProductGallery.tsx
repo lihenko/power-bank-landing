@@ -46,11 +46,9 @@ export default function ProductGallery({
             <div className="w-full">
             {/* Головне зображення */}
             <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-50">
-                <Image
+                <img
                 src={activeImage}
                 alt={`${productName} — зображення ${activeIndex + 1}`}
-                fill
-                priority
                 className="object-contain p-6"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 />

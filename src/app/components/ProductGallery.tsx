@@ -25,10 +25,9 @@ export default function ProductGallery({
   if (validImages.length === 0) {
     return (
       <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-50">
-        <Image
+        <img
           src="/products/placeholder.webp"
           alt={productName}
-          fill
           className="object-contain p-6"
           sizes="(max-width: 768px) 100vw, 50vw"
         />

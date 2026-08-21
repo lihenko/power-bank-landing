@@ -36,7 +36,7 @@ export default function PackageSection({
 
         <div className="order-1 lg:order-2">
           <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <Image src={image} alt={imageAlt} width={1024} height={1024} className="mx-auto" />
+            <img src={image} alt={imageAlt} width={1024} height={1024} className="mx-auto" />
           </div>
         </div>
       </div>

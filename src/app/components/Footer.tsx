@@ -8,12 +8,11 @@ export default function Footer() {
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
             <Link href="/">
-              <Image
+              <img
                 src="/hitmarket-white.webp"
                 alt="HitMarket"
                 width={220}
                 height={70}
-                priority
               />
             </Link>
 

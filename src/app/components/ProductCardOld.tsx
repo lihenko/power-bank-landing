@@ -35,7 +35,7 @@ export function ProductCardOld({
         "
       >
 
-        <Image
+        <img
           src={
             product.hero.image ||
             "/products/placeholder.webp"
@@ -45,8 +45,6 @@ export function ProductCardOld({
             product.hero.imageAlt ||
             product.productName
           }
-
-          fill
 
           className="
             object-contain

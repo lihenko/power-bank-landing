@@ -15,7 +15,7 @@ export default function PortsSection({
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-4 lg:grid-cols-2">
         <div>
           <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <Image src={image} alt={imageAlt} width={500} height={500} className="mx-auto" />
+            <img src={image} alt={imageAlt} width={500} height={500} className="mx-auto" />
           </div>
         </div>
 

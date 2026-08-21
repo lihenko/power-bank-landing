@@ -32,7 +32,7 @@ export default function Hero({
           <div className="relative">
             <div className="absolute inset-0 rounded-[40px] bg-blue-50 blur-3xl" />
             <div className="relative rounded-[32px] border border-slate-200 bg-white p-8 shadow-xl">
-              <Image src={image} alt={imageAlt} width={500} height={500} priority className="mx-auto" />
+              <img src={image} alt={imageAlt} width={500} height={500} className="mx-auto" />
             </div>
           </div>
 

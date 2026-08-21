@@ -55,7 +55,7 @@ export default async function CategoriesSection() {
 
                 <div className="relative aspect-1536/1024 overflow-hidden bg-slate-100">
 
-                  <Image
+                  <img
                     src={image}
                     alt={category.name}
                     fill

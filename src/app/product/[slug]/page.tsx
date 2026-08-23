@@ -19,6 +19,7 @@ import Specifications from "@/app/components/Specifications";
 import Features from "@/app/components/Features";
 import ProductGallery from "@/app/components/ProductGallery";
 import { getCategorySlug } from "@/app/lib/category-slugs";
+import OutOfStockActions from "@/app/components/OutOfStockActions";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -828,6 +829,14 @@ export default async function ProductPage(
               )
             : undefined
         }
+
+        isAvailable={isAvailable}
+
+        categoryHref={
+          categorySlug
+            ? `/category/${categorySlug}`
+            : "/"
+        }
       />
 
 
@@ -936,37 +945,38 @@ export default async function ProductPage(
       {/* HOW TO ORDER */}
       {/* ================================================== */}
 
-      <HowToOrder />
+      {isAvailable && (
+        <HowToOrder />
+      )}
 
 
       {/* ================================================== */}
       {/* ORDER */}
       {/* ================================================== */}
 
-      <OrderPage
+      {isAvailable ? (
 
-        productName={
-          product.name
-        }
+        <OrderPage
+          productName={product.name}
+          price={Number(product.price)}
+          stockCount={
+            Math.floor(
+              Math.random() * (50 - 5 + 1)
+            ) + 5
+          }
+        />
 
-        price={
-          Number(
-            product.price
-          )
-        }
+      ) : (
 
-        stockCount={
-          product.available === 1
-            ? Math.floor(
-                Math.random() *
-                  (
-                    50 - 5 + 1
-                  )
-              ) + 5
-            : 0
-        }
+        <OutOfStockActions
+          categoryHref={
+            categorySlug
+              ? `/category/${categorySlug}`
+              : "/"
+          }
+        />
 
-      />
+      )}
 
 
       {/* ================================================== */}
@@ -980,28 +990,30 @@ export default async function ProductPage(
       {/* STICKY BUTTON */}
       {/* ================================================== */}
 
-      <StickyButton
-        price={
-          Number(
-            product.price
-          )
-        }
-      />
+      {isAvailable && (
+        <StickyButton
+          price={
+            Number(
+              product.price
+            )
+          }
+        />
+      )}
 
 
       {/* ================================================== */}
       {/* LIVE VIEWERS */}
       {/* ================================================== */}
-
-      <LiveViewersBadge />
-
+      {isAvailable && (
+        <LiveViewersBadge />
+      )}
 
       {/* ================================================== */}
       {/* RECENT ORDER */}
       {/* ================================================== */}
-
-      <RecentOrderToast />
-
+      {isAvailable && (
+        <RecentOrderToast />
+      )}
     </>
   );
 }

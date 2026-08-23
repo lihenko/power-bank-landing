@@ -5,6 +5,8 @@ import { HeroConfig } from "@/app/lib/product-config";
 interface Props extends HeroConfig {
   price: number;
   oldPrice?: number;
+  isAvailable?: boolean;
+  categoryHref?: string;
 }
 
 export default function Hero({
@@ -20,6 +22,8 @@ export default function Hero({
   ctaText = "Замовити зараз",
   ctaHref = "#order",
   disclaimer,
+  isAvailable = true,
+  categoryHref = "/",
 }: Props) {
   const discount =
   oldPrice && oldPrice > price
@@ -71,12 +75,32 @@ export default function Hero({
               </span>
             )}
 
-            <a
-              href={ctaHref}
-              className="mt-8 flex h-14 w-full items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white transition hover:bg-slate-800 lg:w-fit lg:px-10"
-            >
-              {ctaText}
-            </a>
+            
+              {isAvailable ? (
+              <a
+                href={ctaHref}
+                className="mt-8 flex h-14 w-full items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white transition hover:bg-slate-800 lg:w-fit lg:px-10"
+              >
+                {ctaText}
+              </a>
+            ) : (
+              <div className="mt-8 flex flex-wrap gap-3 lg:w-fit">
+                <button
+                  type="button"
+                  disabled
+                  className="flex h-14 w-fit items-center justify-center rounded-2xl bg-slate-200 text-lg font-semibold text-slate-500 cursor-not-allowed lg:px-10"
+                >
+                  Немає в наявності
+                </button>
+
+                <a
+                  href={categoryHref}
+                  className="flex h-14 w-fit items-center justify-center rounded-2xl border border-slate-300 text-lg font-semibold text-slate-900 transition hover:bg-slate-50 lg:px-10"
+                >
+                  Інші товари категорії
+                </a>
+              </div>
+            )}
 
             {checklist && checklist.length > 0 && (
               <div className="mt-10 space-y-4">

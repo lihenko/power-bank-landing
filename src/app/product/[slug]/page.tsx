@@ -18,6 +18,7 @@ import { ProductSchema } from "@/app/components/ProductSchema";
 import Specifications from "@/app/components/Specifications";
 import Features from "@/app/components/Features";
 import ProductGallery from "@/app/components/ProductGallery";
+import { getCategorySlug } from "@/app/lib/category-slugs";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -481,6 +482,22 @@ export default async function ProductPage(
   const images =
     product.images ?? [];
 
+  /*
+   * ============================================================
+   * AVAILABILITY
+   * ============================================================
+   */
+
+  const isAvailable =
+    product.available === 1;
+
+  const categorySlug =
+    product.category_id !== null
+      ? getCategorySlug(
+          product.category_id
+        )
+      : null;
+
 
   /*
    * ------------------------------------------------------------
@@ -514,6 +531,7 @@ export default async function ProductPage(
       images,
       3
     );
+
 
 
   /*

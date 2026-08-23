@@ -892,10 +892,12 @@ export default async function ProductPage(
         />
       )}
 
-      <ProductGallery
-        images={images}
-        productName={product.name}
-      />
+      {images.length > 0 && (
+        <ProductGallery
+         images={images}
+         productName={product.name}
+        />
+      )}
 
 
       {/* ================================================== */}

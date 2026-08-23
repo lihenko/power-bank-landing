@@ -64,7 +64,7 @@ export default function CategoryPagination({
 
   const pages: number[] = [];
 
-  const maxVisiblePages = 5;
+  const maxVisiblePages = 3;
 
   let startPage =
     Math.max(

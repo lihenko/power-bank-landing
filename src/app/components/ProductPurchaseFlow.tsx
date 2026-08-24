@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BundlesSection from "./BundlesSection";
 import OrderPage from "./OrderPage";
 import { BundlesConfig } from "@/app/lib/product-config";
@@ -18,11 +18,18 @@ export default function ProductPurchaseFlow({
   stockCount,
   bundles,
 }: Props) {
-  const [selectedBundle, setSelectedBundle] = useState<{
+  const [selected, setSelected] = useState<{
     index: number;
     quantity: number;
-    totalPrice: number;
+    discountPercent?: number;
   } | null>(null);
+
+  const totalPrice = useMemo(() => {
+    if (!selected) return price;
+    return selected.discountPercent
+      ? Math.round(selected.quantity * price * (1 - selected.discountPercent / 100))
+      : selected.quantity * price;
+  }, [selected, price]);
 
   return (
     <>
@@ -30,18 +37,18 @@ export default function ProductPurchaseFlow({
         <BundlesSection
           {...bundles}
           price={price}
-          selectedIndex={selectedBundle?.index ?? null}
-          onSelect={(index, quantity, totalPrice) =>
-            setSelectedBundle({ index, quantity, totalPrice })
+          selectedIndex={selected?.index ?? null}
+          onSelect={(index, quantity, discountPercent) =>
+            setSelected({ index, quantity, discountPercent })
           }
         />
       )}
 
       <OrderPage
         productName={productName}
-        price={selectedBundle?.totalPrice ?? price}
+        price={totalPrice}
         stockCount={stockCount}
-        quantity={selectedBundle?.quantity ?? 1}
+        quantity={selected?.quantity ?? 1}
       />
     </>
   );

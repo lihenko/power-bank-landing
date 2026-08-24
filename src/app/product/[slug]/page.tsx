@@ -20,6 +20,8 @@ import Features from "@/app/components/Features";
 import ProductGallery from "@/app/components/ProductGallery";
 import { getCategorySlug } from "@/app/lib/category-slugs";
 import OutOfStockActions from "@/app/components/OutOfStockActions";
+import getAverageRating from "@/app/lib/reviews";
+import ProductPurchaseFlow from "@/app/components/ProductPurchaseFlow";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -461,6 +463,31 @@ export default async function ProductPage(
     notFound();
   }
 
+  /*
+   * ============================================================
+   * PRICE
+   * ============================================================
+   */
+
+  const isCheap = product.price < 200;
+  const displayPrice = isCheap ? Math.round(product.price * 1.2) : product.price;
+  const displayOldPrice = product.old_price
+  ? isCheap
+    ? Math.round(product.old_price * 1.2)
+    : product.old_price
+  : undefined;
+
+  const product_bandles = {
+    eyebrow: "Заощаджуйте прямо зараз",
+    title: "Оберіть вигідний комплект",
+    unitLabel: "шт",
+    options: [
+      { quantity: 1, bonus: 0 },
+      { quantity: 2, bonus: 0, discountPercent: 5, label: "Економний" },
+      { quantity: 3, bonus: 0, discountPercent: 10, label: "Популярний" },
+      { quantity: 4, bonus: 0, discountPercent: 15, label: "Найвигідніше" },
+    ],
+  };
 
   /*
    * ============================================================
@@ -699,6 +726,8 @@ export default async function ProductPage(
   const reviews =
     config.reviews ?? [];
 
+  const avgRating = getAverageRating(reviews);
+
 
   /*
    * ============================================================
@@ -729,13 +758,13 @@ export default async function ProductPage(
 
     price:
       Number(
-        product.price
+        displayPrice
       ),
 
     oldPrice:
-      product.old_price !== null
+      displayOldPrice !== null
         ? Number(
-            product.old_price
+            displayOldPrice
           )
         : undefined,
 
@@ -818,14 +847,14 @@ export default async function ProductPage(
 
         price={
           Number(
-            product.price
+            displayPrice
           )
         }
 
         oldPrice={
-          product.old_price !== null
+          displayOldPrice !== null
             ? Number(
-                product.old_price
+                displayOldPrice
               )
             : undefined
         }
@@ -837,6 +866,7 @@ export default async function ProductPage(
             ? `/category/${categorySlug}`
             : "/"
         }
+        rating={avgRating} reviewCount={reviews.length}
       />
 
 
@@ -956,17 +986,32 @@ export default async function ProductPage(
       {/* ORDER */}
       {/* ================================================== */}
 
+
+
       {isAvailable ? (
 
+        isCheap ? (
+          <ProductPurchaseFlow
+            productName={product.name}
+            price={displayPrice}
+            stockCount={
+            Math.floor(
+                Math.random() * (50 - 5 + 1)
+              ) + 5
+            }
+            bundles={product_bandles}
+          />
+        ) : (
         <OrderPage
           productName={product.name}
-          price={Number(product.price)}
+          price={Number(displayPrice)}
           stockCount={
             Math.floor(
               Math.random() * (50 - 5 + 1)
             ) + 5
           }
         />
+        )
 
       ) : (
 

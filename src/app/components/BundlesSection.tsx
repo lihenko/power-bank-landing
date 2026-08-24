@@ -6,7 +6,7 @@ import { BundlesConfig } from "@/app/lib/product-config";
 interface Props extends BundlesConfig {
   price: number;
   selectedIndex: number | null;
-  onSelect: (index: number, quantity: number, totalPrice: number) => void;
+  onSelect: (index: number, quantity: number, discountPercent?: number) => void;
 }
 
 export default function BundlesSection({
@@ -52,7 +52,7 @@ export default function BundlesSection({
               <button
                 key={`${option.quantity}-${option.bonus ?? 0}-${option.discountPercent ?? 0}`}
                 type="button"
-                onClick={() => onSelect(index, option.quantity, payAmount)}
+                onClick={() => onSelect(index, option.quantity, option.discountPercent)}
                 className={`relative rounded-2xl border-2 bg-white p-6 text-left transition hover:shadow-lg ${
                   isSelected
                     ? "border-green-600 shadow-lg ring-2 ring-green-200"

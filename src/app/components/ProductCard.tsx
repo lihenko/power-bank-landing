@@ -11,7 +11,16 @@ export function ProductCard({
   product,
 }: ProductCardProps) {
 
+  const isCheap = product.price < 200;
+  const displayPrice = isCheap ? Math.round(product.price * 1.2) : product.price;
+  const displayOldPrice = product.oldPrice
+    ? isCheap
+      ? Math.round(product.oldPrice * 1.2)
+      : product.oldPrice
+    : undefined;
+
   return (
+    
 
     <Link
       href={`/product/${product.productSlug}`}
@@ -88,10 +97,10 @@ export function ProductCard({
               font-bold
             "
           >
-            {product.price} ₴
+            {displayPrice} ₴
           </span>
 
-          {product.oldPrice !== undefined && (
+          {displayOldPrice !== undefined && (
             <span
               className="
                 text-sm
@@ -99,7 +108,7 @@ export function ProductCard({
                 line-through
               "
             >
-              {product.oldPrice} ₴
+              {displayOldPrice} ₴
             </span>
           )}
 

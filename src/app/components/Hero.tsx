@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Check, Star } from "lucide-react";
 import { HeroConfig } from "@/app/lib/product-config";
 
@@ -7,6 +6,8 @@ interface Props extends HeroConfig {
   oldPrice?: number;
   isAvailable?: boolean;
   categoryHref?: string;
+  rating?: number;       // середній рейтинг, напр. 4.7
+  reviewCount?: number;  // кількість відгуків
 }
 
 export default function Hero({
@@ -19,6 +20,8 @@ export default function Hero({
   oldPrice,
   checklist,
   ratingSubtext,
+  rating = 5,
+  reviewCount,
   ctaText = "Замовити зараз",
   ctaHref = "#order",
   disclaimer,
@@ -54,13 +57,29 @@ export default function Hero({
             <p className="mt-6 text-lg leading-8 text-slate-600">{description}</p>
 
             <div className="mt-6 flex items-center gap-2">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} size={18} fill="currentColor" className="text-amber-400" />
-              ))}
-              {ratingSubtext && (
-                <span className="ml-2 text-sm text-slate-500">{ratingSubtext}</span>
-              )}
-            </div>
+                {[1, 2, 3, 4, 5].map((i) => {
+                  const filled = rating >= i;
+                  const half = !filled && rating > i - 1;
+                  return (
+                    <div key={i} className="relative">
+                      <Star size={18} className="text-slate-200" fill="currentColor" />
+                      {(filled || half) && (
+                        <div
+                          className="absolute inset-0 overflow-hidden"
+                          style={{ width: filled ? "100%" : `${(rating - (i - 1)) * 100}%` }}
+                        >
+                          <Star size={18} fill="currentColor" className="text-amber-400" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                <a href="#reviews" className="ml-2 text-sm text-slate-500">
+                  {rating.toFixed(1)}
+                  {reviewCount ? ` · ${reviewCount} відгуків` : ""}
+                  {!reviewCount && ratingSubtext ? ` · ${ratingSubtext}` : ""}
+                </a>
+              </div>
 
             <div className="mt-8 flex items-end gap-4">
               <span className="text-5xl font-black text-slate-900">{price}₴</span>

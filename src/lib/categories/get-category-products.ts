@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import type { ProductConfig } from "@/app/lib/product-config";
 
-interface DatabaseProduct {
+export interface DatabaseProduct {
   id: number;
 
   name: string;
@@ -68,7 +68,7 @@ function parseConfig(
  * ============================================================
  */
 
-function mapProduct(
+export function mapProduct(
   product: DatabaseProduct
 ): ProductConfig {
 

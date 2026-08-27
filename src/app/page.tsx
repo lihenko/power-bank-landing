@@ -1,9 +1,19 @@
-import { allProducts } from '@/app/lib/products/index';
-import { ProductCardOld } from '@/app/components/ProductCardOld';
 import LatestProducts from "@/app/components/LatestProducts";
 import CategoriesSection from "@/app/components/CategoriesSection";
 import Footer from '@/app/components/Footer';
-import SearchForm from "@/app/components/SearchForm"
+import SearchForm from "@/app/components/SearchForm";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://hitmarket.pp.ua",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 
 export default function Home() {

@@ -22,6 +22,7 @@ import { getCategorySlug } from "@/app/lib/category-slugs";
 import OutOfStockActions from "@/app/components/OutOfStockActions";
 import getAverageRating from "@/app/lib/reviews";
 import ProductPurchaseFlow from "@/app/components/ProductPurchaseFlow";
+import DiscountNotice from "@/app/components/DiscountNotice";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -468,8 +469,8 @@ export default async function ProductPage(
    * PRICE
    * ============================================================
    */
-
-  const isCheap = product.price < 200;
+  const isDiscounted = product.category_id === 47;
+  const isCheap = product.price < 200 && !isDiscounted;
   const displayPrice = isCheap ? Math.round(product.price * 1.2) : product.price;
   const displayOldPrice = product.old_price
   ? isCheap
@@ -773,6 +774,8 @@ export default async function ProductPage(
         ? 1
         : 0,
 
+    category_id: product.category_id,
+
     seo: {
 
       title:
@@ -852,7 +855,7 @@ export default async function ProductPage(
         }
 
         oldPrice={
-          displayOldPrice !== null
+          displayOldPrice != null
             ? Number(
                 displayOldPrice
               )
@@ -869,7 +872,7 @@ export default async function ProductPage(
         rating={avgRating} reviewCount={reviews.length}
       />
 
-
+      {isDiscounted && <DiscountNotice />}
       {/* ================================================== */}
       {/* COUNTDOWN */}
       {/* ================================================== */}

@@ -10,6 +10,8 @@ export interface DatabaseProduct {
   price: number;
   old_price: number | null;
 
+  category_id: number | null;
+
   available: number;
 
   config: ProductConfig | string | null;
@@ -120,6 +122,8 @@ export function mapProduct(
     stockCount:
       1,
 
+    category_id:
+    product.category_id,
 
     seo:
       config.seo ?? {
@@ -301,6 +305,7 @@ export async function getCategoryProducts(
         p.slug,
         p.price,
         p.old_price,
+        p.category_id,
         p.available,
         p.config,
 

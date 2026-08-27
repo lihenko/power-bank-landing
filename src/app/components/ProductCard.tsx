@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-
 import { ProductConfig } from "@/app/lib/product-config";
 
 interface ProductCardProps {
@@ -11,7 +10,14 @@ export function ProductCard({
   product,
 }: ProductCardProps) {
 
-  const isCheap = product.price < 200;
+  console.log("PRODUCT CARD:", {
+  name: product.productName,
+  category_id: product.category_id,
+  type: typeof product.category_id,
+});
+
+  const isDiscounted = product.category_id === 47;
+  const isCheap = product.price < 200 && !isDiscounted;
   const displayPrice = isCheap ? Math.round(product.price * 1.2) : product.price;
   const displayOldPrice = product.oldPrice
     ? isCheap

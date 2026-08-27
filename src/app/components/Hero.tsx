@@ -29,8 +29,8 @@ export default function Hero({
   categoryHref = "/",
 }: Props) {
   const discount =
-  oldPrice && oldPrice > price
-    ? Math.round(((oldPrice - price) / oldPrice) * 100)
+  Number.isFinite(oldPrice) && oldPrice! > price
+    ? Math.round(((oldPrice! - price) / oldPrice!) * 100)
     : null;
   return (
     <section className="bg-linear-to-b from-slate-50 to-white">
@@ -83,7 +83,7 @@ export default function Hero({
 
             <div className="mt-8 flex items-end gap-4">
               <span className="text-5xl font-black text-slate-900">{price}₴</span>
-              {oldPrice && (
+              {Number.isFinite(oldPrice) && (
                 <span className="text-2xl text-slate-400 line-through">{oldPrice}₴</span>
               )}
             </div>

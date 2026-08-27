@@ -109,7 +109,7 @@ export interface ProductConfig {
   price: number;
   oldPrice?: number;
   stockCount?: number;
-
+  category_id: number | null;
   seo: SeoConfig;
   hero: HeroConfig;
   features?: FeaturesConfig;

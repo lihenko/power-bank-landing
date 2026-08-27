@@ -348,6 +348,8 @@ export default async function SearchPage({
                           productSlug:
                             product.slug,
 
+                          category_id: product.categoryId,
+
                           price:
                             product.price,
 

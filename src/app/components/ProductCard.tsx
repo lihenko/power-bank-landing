@@ -10,12 +10,6 @@ export function ProductCard({
   product,
 }: ProductCardProps) {
 
-  console.log("PRODUCT CARD:", {
-  name: product.productName,
-  category_id: product.category_id,
-  type: typeof product.category_id,
-});
-
   const isDiscounted = product.category_id === 47;
   const isCheap = product.price < 200 && !isDiscounted;
   const displayPrice = isCheap ? Math.round(product.price * 1.2) : product.price;

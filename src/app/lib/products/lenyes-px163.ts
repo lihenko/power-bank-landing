@@ -7,6 +7,7 @@ export const lenyesConfig: ProductConfig = {
   price: 580,
   oldPrice: 699,
   stockCount: 7,
+  category_id: 22,
   viewersRange: { min: 6, max: 14 },
 
   seo: {

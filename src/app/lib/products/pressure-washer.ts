@@ -7,6 +7,7 @@ export const pressureWasherConfig: ProductConfig = {
   price: 835,
   oldPrice: 2130,
   stockCount: 27,
+  category_id: 22,
   viewersRange: { min: 8, max: 19 },
 
   seo: {

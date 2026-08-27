@@ -9,6 +9,7 @@ export const kinokiConfig: ProductConfig = {
   price: 199,
   oldPrice: 549,
   stockCount: 28,
+  category_id: 22,
   viewersRange: { min: 8, max: 19 },
 
   seo: {

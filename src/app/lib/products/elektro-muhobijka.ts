@@ -8,6 +8,7 @@ export const elektroMuhobijkaConfig: ProductConfig = {
   productSlug: "elektro-muhobijka",
   price: 399,
   oldPrice: 590,
+  category_id: 22,
   stockCount: 34, // TODO: підстав реальну кількість
   viewersRange: { min: 6, max: 15 }, // TODO: узгодь діапазон
 

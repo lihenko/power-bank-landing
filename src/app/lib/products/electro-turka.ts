@@ -7,6 +7,7 @@ export const electroturkaConfig: ProductConfig = {
   price: 499,
   oldPrice: 750,
   stockCount: 12,
+  category_id: 22,
   viewersRange: { min: 5, max: 13 },
 
   seo: {

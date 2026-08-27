@@ -14,6 +14,7 @@ export const kingPowerKPG508Config: ProductConfig = {
   price: 1599,
   oldPrice: 2039,
   stockCount: 9,
+  category_id: 22,
   viewersRange: { min: 8, max: 18 },
 
   seo: {

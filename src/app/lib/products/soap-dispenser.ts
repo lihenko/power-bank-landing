@@ -9,6 +9,7 @@ export const soapDispenserConfig: ProductConfig = {
   price: 299,
   oldPrice: 499,
   stockCount: 24,
+  category_id: 22,
   viewersRange: { min: 8, max: 19 },
 
   seo: {

@@ -1,0 +1,34 @@
+import { NextResponse } from "next/server";
+
+const BASE_URL = "https://hitmarket.pp.ua";
+
+export const revalidate = 86400;
+
+export async function GET() {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-products.xml</loc>
+  </sitemap>
+
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-categories.xml</loc>
+  </sitemap>
+
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-pages.xml</loc>
+  </sitemap>
+
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-blog.xml</loc>
+  </sitemap>
+</sitemapindex>`;
+
+  return new NextResponse(xml, {
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control":
+        "public, s-maxage=86400, stale-while-revalidate=86400",
+    },
+  });
+}

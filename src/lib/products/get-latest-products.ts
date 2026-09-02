@@ -79,6 +79,7 @@ export async function getLatestProducts(
       FROM products p
 
       WHERE p.available = 1
+      AND p.category_id != 47
 
       ORDER BY p.created_at DESC
 

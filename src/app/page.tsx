@@ -2,6 +2,7 @@ import LatestProducts from "@/app/components/LatestProducts";
 import CategoriesSection from "@/app/components/CategoriesSection";
 import Footer from '@/app/components/Footer';
 import SearchForm from "@/app/components/SearchForm";
+import LatestBlogPosts from "@/app/components/LatestBlogPosts";
 import type { Metadata } from "next";
 
 
@@ -36,6 +37,7 @@ export default function Home() {
     </section>
       <LatestProducts />
       <CategoriesSection />
+      <LatestBlogPosts/>
       <Footer />
     </>
   );

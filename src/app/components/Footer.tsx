@@ -17,8 +17,8 @@ export default function Footer() {
             </Link>
 
             <p className="mt-4 max-w-lg leading-7 text-zinc-400">
-              Популярні товари з доставкою по всій Україні. Оплата після отримання,
-              швидка відправка та гарантія якості.
+              Популярні товари з доставкою по всій Україні. Оплата після
+              отримання, швидка відправка та гарантія якості.
             </p>
           </div>
 
@@ -29,7 +29,10 @@ export default function Footer() {
 
             <ul className="space-y-3 text-sm">
               <li>🚚 Доставка Новою Поштою та Укрпоштою</li>
-              <li>💳 Передплата за замовлення 50грн, замовлення до 400 грн відправляються за повною передплатою</li>
+              <li>
+                💳 Передплата за замовлення 50грн, замовлення до 400 грн
+                відправляються за повною передплатою
+              </li>
               <li>📦 Відправка протягом 1–2 робочих днів</li>
             </ul>
           </div>
@@ -37,25 +40,44 @@ export default function Footer() {
 
         <div className="my-10 h-px bg-zinc-800" />
 
-        <div className="flex flex-col gap-4 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} Всі права захищені.</p>
+        <div className="flex flex-col gap-4 text-sm text-zinc-500 lg:flex-row md:items-center md:justify-between">
+          <p className="order-2 text-center lg:order-1">© {new Date().getFullYear()} Всі права захищені.</p>
 
-          <div className="flex flex-wrap gap-6">
-            <a href="/privacy" className="hover:text-white transition">
+          <div className="flex flex-wrap gap-6 mb-6 order-1 justify-center lg:order-2 lg:mb-0 lg:justify-end">
+            <Link
+              href="/blog"
+              className="transition hover:text-white"
+            >
+              Блог
+            </Link>
+
+            <Link
+              href="/privacy"
+              className="transition hover:text-white"
+            >
               Політика конфіденційності
-            </a>
+            </Link>
 
-            <a href="/delivery" className="hover:text-white transition">
+            <Link
+              href="/delivery"
+              className="transition hover:text-white"
+            >
               Доставка та оплата
-            </a>
+            </Link>
 
-            <a href="/returns" className="hover:text-white transition">
+            <Link
+              href="/returns"
+              className="transition hover:text-white"
+            >
               Повернення товару
-            </a>
+            </Link>
 
-            <a href="/contacts" className="hover:text-white transition">
+            <Link
+              href="/contacts"
+              className="transition hover:text-white"
+            >
               Контакти
-            </a>
+            </Link>
           </div>
         </div>
       </div>

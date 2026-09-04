@@ -71,7 +71,7 @@ export async function getCategories(): Promise<Category[]> {
    *
    */
 
-  const [rows] =
+    const [rows] =
     await db.query(
       `
       SELECT
@@ -79,10 +79,12 @@ export async function getCategories(): Promise<Category[]> {
         name
       FROM categories
       WHERE id IN (${placeholders})
-      ORDER BY FIELD(
-        id,
-        ${placeholders}
-      )
+      ORDER BY
+        (id = 47),
+        FIELD(
+          id,
+          ${placeholders}
+        )
       `,
       [
         ...categoryIds,

@@ -13,6 +13,15 @@ export interface ProductImage {
   updated_at: Date;
 }
 
+export interface ProductParam {
+  id: number;
+  product_id: number;
+  name: string;
+  value: string | null;
+  unit: string | null;
+  created_at: Date;
+}
+
 export interface Product {
   id: number;
   source: string;
@@ -52,6 +61,7 @@ export interface Product {
   seo_description: string | null;
 
   images: ProductImage[];
+  params: ProductParam[];
 }
 
 export async function getProductBySlug(
@@ -147,6 +157,30 @@ export async function getProductBySlug(
 
   const images = imageRows as ProductImage[];
 
+    /*
+   * ============================================================
+   * PARAMS
+   * ============================================================
+   */
+
+  const [paramRows] = await db.execute(
+    `
+      SELECT
+        id,
+        product_id,
+        name,
+        value,
+        unit,
+        created_at
+      FROM product_params
+      WHERE product_id = ?
+      ORDER BY id ASC
+    `,
+    [product.id]
+  );
+
+  const params = paramRows as ProductParam[];
+
   /*
    * ============================================================
    * RESULT
@@ -156,5 +190,6 @@ export async function getProductBySlug(
   return {
     ...product,
     images,
+    params,
   } as Product;
 }

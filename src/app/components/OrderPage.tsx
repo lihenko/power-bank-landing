@@ -17,12 +17,14 @@ interface Props {
   price: number;
   stockCount?: number;
   quantity?: number;
+  categoryId?: number;
 }
 
 export default function OrderPage({
   productName,
   price,
   stockCount,
+  categoryId,
   quantity = 1,
 }: Props) {
   const router = useRouter();
@@ -130,7 +132,7 @@ export default function OrderPage({
               </p>
             )}
 
-            {typeof stockCount === "number" && (
+            {typeof stockCount === "number" && categoryId !== 60 && (
               <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
                 <PackageCheck className="h-4 w-4" />
                 <span>Залишилось на складі: {stockCount} шт</span>
@@ -145,10 +147,17 @@ export default function OrderPage({
               {isSubmitting ? "Відправка..." : "Оформити замовлення"}
             </Button>
 
-            <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
-              <Truck className="h-6 w-6 text-green-600 shrink-0" />
-              <span>Передплата за замовлення 50грн, замовлення до 400 грн відправляються за повною передплатою</span>
-            </div>
+            {categoryId === 60 ? (
+              <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
+                <Truck className="h-6 w-6 text-green-600 shrink-0" />
+                <span>Виготовлення виробу здійснюється тільки за 100% попередньою оплатою, оскільки товар друкується індивідуально під замовлення</span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
+                <Truck className="h-6 w-6 text-green-600 shrink-0" />
+                <span>Передплата за замовлення 50грн, замовлення до 400 грн відправляються за повною передплатою</span>
+              </div>
+            )}
           </div>
         </form>
       </div>

@@ -23,6 +23,7 @@ import OutOfStockActions from "@/app/components/OutOfStockActions";
 import getAverageRating from "@/app/lib/reviews";
 import ProductPurchaseFlow from "@/app/components/ProductPurchaseFlow";
 import DiscountNotice from "@/app/components/DiscountNotice";
+import ProductParams from "@/app/components/ProductParams";
 
 import { getProductBySlug } from "@/lib/products/get-product";
 
@@ -950,6 +951,7 @@ export default async function ProductPage(
       )}
 
 
+
       {/* ================================================== */}
       {/* REVIEWS */}
       {/* ================================================== */}
@@ -1008,6 +1010,7 @@ export default async function ProductPage(
         <OrderPage
           productName={product.name}
           price={Number(displayPrice)}
+          categoryId={product.category_id ?? undefined}
           stockCount={
             Math.floor(
               Math.random() * (50 - 5 + 1)

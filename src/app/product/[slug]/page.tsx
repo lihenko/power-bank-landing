@@ -1047,7 +1047,7 @@ export default async function ProductPage(
         <StickyButton
           price={
             Number(
-              product.price
+              displayPrice
             )
           }
         />

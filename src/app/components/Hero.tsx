@@ -50,10 +50,7 @@ export default function Hero({
               </div>
             )}
 
-            <h1
-              lang="uk"
-              className="mt-6 whitespace-pre-line wrap-break-words hyphens-auto text-[clamp(2rem,8vw,3.75rem)] font-black leading-[1.05] text-slate-900"
-            >
+            <h1 className="mt-6 whitespace-pre-line text-[28px] font-black leading-[1.05] text-slate-900 sm:text-4xl lg:text-6xl">
               {title}
             </h1>
 

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -9,10 +8,10 @@ export default function Footer() {
           <div>
             <Link href="/">
               <img
-                src="/hitmarket-white.webp"
+                src="/hitmarket-white.svg"
                 alt="HitMarket"
-                width={220}
-                height={70}
+                width={200}
+                height={123}
               />
             </Link>
 

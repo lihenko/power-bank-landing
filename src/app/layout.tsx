@@ -85,19 +85,20 @@ export default function RootLayout({
     <html lang="uk" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body className={`${inter.variable} font-sans antialiased bg-white text-slate-900`}>
         <FacebookPixel />
+        {process.env.NODE_ENV === "production" && (
+        <>
+        <GoogleAnalytics gaId="G-XKEGRTR1D9" />
+            <Script id="google-ads-config" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push(['config', 'AW-1032605975']);
+              `}
+            </Script>
+          </>
+        )}
         {children}
       </body>
-      {process.env.NODE_ENV === "production" && (
-      <>
-      <GoogleAnalytics gaId="G-XKEGRTR1D9" />
-          <Script id="google-ads-config" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push(['config', 'AW-1032605975']);
-            `}
-          </Script>
-        </>
-      )}
+      
     </html>
   );
 }

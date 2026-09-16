@@ -4,6 +4,9 @@ import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/app/components/ProductCard";
 import { getRandomProducts } from "@/lib/products/get-random-products";
+import { ConversionTracker } from "@/app/components/ConversionTracker"
+
+
 
 
 export default async function OrderSuccessPage() {
@@ -15,6 +18,8 @@ export default async function OrderSuccessPage() {
   return (
 
     <>
+
+      <ConversionTracker />
 
       <div className="mx-auto max-w-lg py-20 text-center space-y-6">
 

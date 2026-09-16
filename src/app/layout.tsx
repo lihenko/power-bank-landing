@@ -88,16 +88,16 @@ export default function RootLayout({
         {children}
       </body>
       {process.env.NODE_ENV === "production" && (
-  <>
-    <GoogleAnalytics gaId="G-XKEGRTR1D9" />
-        <Script id="google-ads-config" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push(['config', 'AW-1032605975']);
-          `}
-        </Script>
-      </>
-    )}
+      <>
+      <GoogleAnalytics gaId="G-XKEGRTR1D9" />
+          <Script id="google-ads-config" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push(['config', 'AW-1032605975']);
+            `}
+          </Script>
+        </>
+      )}
     </html>
   );
 }

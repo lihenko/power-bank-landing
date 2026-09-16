@@ -7,7 +7,7 @@ export function ConversionTracker() {
   useEffect(() => {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push(['event', 'conversion', {
-      send_to: 'AW-1032605975/5JXzCNuquPkcEJeisewD'
+      send_to: 'AW-1032605975/lpzRCJHd-LccEJeisewD'
     }])
   }, [])
 

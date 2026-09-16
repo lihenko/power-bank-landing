@@ -86,12 +86,22 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-white text-slate-900`}>
         <FacebookPixel />
         {process.env.NODE_ENV === "production" && (
-        <>
-        <GoogleAnalytics gaId="G-XKEGRTR1D9" />
+          <>
+            <GoogleAnalytics gaId="G-XKEGRTR1D9" />
+
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=AW-1032605975"
+              strategy="afterInteractive"
+            />
+
             <Script id="google-ads-config" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push(['config', 'AW-1032605975']);
+                function gtag(){window.dataLayer.push(arguments);}
+                window.gtag = gtag;
+
+                gtag('js', new Date());
+                gtag('config', 'AW-1032605975');
               `}
             </Script>
           </>

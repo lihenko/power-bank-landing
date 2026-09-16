@@ -7,7 +7,7 @@ export function ConversionTracker() {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push(['config', 'AW-1032605975'])
     window.dataLayer.push(['event', 'conversion', {
-      send_to: 'AW-1032605975/lpzRCJHd-LccEJeisewD'
+      send_to: 'AW-1032605975/RkHgCM-v3PkcEJeisewD'
     }])
   }, [])
 

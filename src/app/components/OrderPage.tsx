@@ -104,7 +104,7 @@ export default function OrderPage({
 
           <section className="space-y-4">
             <h3 className="text-lg font-medium">Доставка</h3>
-            <DeliverySection control={control} />
+            <DeliverySection control={control} categoryId={categoryId} />
           </section>
 
           <section className="space-y-4">
@@ -150,12 +150,24 @@ export default function OrderPage({
             {categoryId === 60 ? (
               <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
                 <Truck className="h-6 w-6 text-green-600 shrink-0" />
-                <span>Виготовлення виробу здійснюється тільки за 100% попередньою оплатою, оскільки товар друкується індивідуально під замовлення</span>
+                <span>
+                  Виготовлення виробу здійснюється тільки за 100% попередньою оплатою,
+                  оскільки товар друкується індивідуально під замовлення
+                </span>
+              </div>
+            ) : categoryId === 69 || categoryId === 61 || categoryId === 63 || categoryId === 67 ? (
+              <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
+                <Truck className="h-6 w-6 text-green-600 shrink-0" />
+                <span>
+                  Передплата за замовлення 400 грн, замовлення до 400 грн відправляються за повною передплатою
+                </span>
               </div>
             ) : (
               <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
                 <Truck className="h-6 w-6 text-green-600 shrink-0" />
-                <span>Передплата за замовлення 50грн, замовлення до 400 грн відправляються за повною передплатою</span>
+                <span>
+                  Передплата за замовлення 50 грн, замовлення до 400 грн відправляються за повною передплатою
+                </span>
               </div>
             )}
           </div>

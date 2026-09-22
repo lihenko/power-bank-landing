@@ -10,12 +10,14 @@ interface Props {
   price: number;
   stockCount?: number;
   bundles?: BundlesConfig;
+  categoryId?: number;
 }
 
 export default function ProductPurchaseFlow({
   productName,
   price,
   stockCount,
+  categoryId,
   bundles,
 }: Props) {
   const [selected, setSelected] = useState<{
@@ -26,8 +28,13 @@ export default function ProductPurchaseFlow({
 
   const totalPrice = useMemo(() => {
     if (!selected) return price;
+
     return selected.discountPercent
-      ? Math.round(selected.quantity * price * (1 - selected.discountPercent / 100))
+      ? Math.round(
+          selected.quantity *
+            price *
+            (1 - selected.discountPercent / 100)
+        )
       : selected.quantity * price;
   }, [selected, price]);
 
@@ -39,7 +46,11 @@ export default function ProductPurchaseFlow({
           price={price}
           selectedIndex={selected?.index ?? null}
           onSelect={(index, quantity, discountPercent) =>
-            setSelected({ index, quantity, discountPercent })
+            setSelected({
+              index,
+              quantity,
+              discountPercent,
+            })
           }
         />
       )}
@@ -48,6 +59,7 @@ export default function ProductPurchaseFlow({
         productName={productName}
         price={totalPrice}
         stockCount={stockCount}
+        categoryId={categoryId}
         quantity={selected?.quantity ?? 1}
       />
     </>

@@ -999,6 +999,7 @@ export default async function ProductPage(
           <ProductPurchaseFlow
             productName={product.name}
             price={displayPrice}
+            categoryId={product.category_id ?? undefined}
             stockCount={
             Math.floor(
                 Math.random() * (50 - 5 + 1)

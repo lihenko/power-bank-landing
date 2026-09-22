@@ -132,6 +132,7 @@ export default function OrderPage({
               </p>
             )}
 
+
             {typeof stockCount === "number" && categoryId !== 60 && (
               <div className="flex items-center justify-center gap-2 text-sm font-medium text-orange-600">
                 <PackageCheck className="h-4 w-4" />

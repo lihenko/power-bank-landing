@@ -24,7 +24,7 @@ const carriers = [
   { id: "ukrposhta", label: "Укрпошта" },
 ] as const;
 
-const NO_UKRPOSHTA_CATEGORIES = [61, 63, 67, 69];
+const NO_UKRPOSHTA_CATEGORIES = [61, 62, 63, 64, 65, 66, 67, 68, 69];
 
 export default function DeliverySection({
   control,

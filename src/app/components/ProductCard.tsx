@@ -56,7 +56,8 @@ export function ProductCard({
           }
 
           className="
-            object-contain
+            aspect-square
+            object-cover
             p-4
             transition-transform
             group-hover:scale-105

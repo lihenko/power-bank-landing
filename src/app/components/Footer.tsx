@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FAQAccordion from "@/app/components/FAQAccordion";
 
 export default function Footer() {
   return (
@@ -21,16 +22,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div>
-            <h4 className="mb-5 font-semibold text-white">
-              Переваги
-            </h4>
-
-            <ul className="space-y-3 text-sm">
-              <li>🚚 Доставка Новою Поштою та Укрпоштою</li>
-              <li>📦 Відправка протягом 1–2 робочих днів</li>
-            </ul>
-          </div>
+          <FAQAccordion/>
         </div>
 
         <div className="my-10 h-px bg-zinc-800" />

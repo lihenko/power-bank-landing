@@ -56,7 +56,7 @@ export default function Faq({
                 >
                   <button
                     onClick={() => setOpened(active ? null : index)}
-                    className="flex w-full items-center justify-between px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between px-6 py-5 text-left cursor-pointer"
                   >
                     <span className="font-semibold text-slate-900">{item.question}</span>
                     <ChevronDown className={`transition ${active ? "rotate-180" : ""}`} />

@@ -1,7 +1,7 @@
 // app/components/ProductSchema.tsx
 import { ProductConfig } from "@/app/lib/product-config";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.pp.ua";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.v.ua";
 
 interface ProductSchemaProps {
   config: ProductConfig;

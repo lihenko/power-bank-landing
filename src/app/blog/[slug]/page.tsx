@@ -129,7 +129,7 @@ export default async function BlogPostPage({
     post.content
   );
 
-  const canonicalUrl = `https://hitmarket.v.ua/blog/${post.slug}`;
+  const canonicalUrl = `https://hitmarket.pp.ua/blog/${post.slug}`;
 
   /*
    * Article structured data
@@ -154,16 +154,16 @@ export default async function BlogPostPage({
     author: {
       "@type": "Organization",
       name: "Hitmarket",
-      url: "https://hitmarket.v.ua",
+      url: "https://hitmarket.pp.ua",
     },
 
     publisher: {
       "@type": "Organization",
       name: "Hitmarket",
-      url: "https://hitmarket.v.ua",
+      url: "https://hitmarket.pp.ua",
       logo: {
         "@type": "ImageObject",
-        url: "https://hitmarket.v.ua/og.webp",
+        url: "https://hitmarket.pp.ua/og.webp",
       },
     },
 
@@ -186,13 +186,13 @@ export default async function BlogPostPage({
         "@type": "ListItem",
         position: 1,
         name: "Головна",
-        item: "https://hitmarket.v.ua/",
+        item: "https://hitmarket.pp.ua/",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Блог",
-        item: "https://hitmarket.v.ua/blog",
+        item: "https://hitmarket.pp.ua/blog",
       },
       {
         "@type": "ListItem",

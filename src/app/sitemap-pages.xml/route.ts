@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BASE_URL = "https://hitmarket.v.ua";
+const BASE_URL = "https://hitmarket.pp.ua";
 
 export const revalidate = 86400;
 

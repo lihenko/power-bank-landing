@@ -70,7 +70,7 @@ export default function DeliveryPage() {
           зв'яжіться з нами — ми відповімо якнайшвидше.
         </p>
         <Link
-          href="https://hitmarket.v.ua/contacts"
+          href="https://hitmarket.pp.ua/contacts"
           className="inline-block rounded-lg bg-black px-5 py-2.5 text-sm font-medium text-white"
         >
           Перейти до контактів

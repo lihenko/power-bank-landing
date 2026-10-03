@@ -199,11 +199,11 @@ export async function generateMetadata(
         "uk_UA",
 
       url:
-        `https://hitmarket.v.ua/category/${slug}`,
+        `https://hitmarket.pp.ua/category/${slug}`,
 
       images: [
         {
-          url: `https://hitmarket.v.ua/categories/${slug}.webp`,
+          url: `https://hitmarket.pp.ua/categories/${slug}.webp`,
           width: 1536,
           height: 1024,
           alt: category.name,
@@ -340,7 +340,7 @@ export default async function CategoryPage(
    * ----------------------------------------------------------
    */
 
-  const SITE_URL = "https://hitmarket.v.ua"; // заміни на реальний домен/env, якщо є константа в проєкті
+  const SITE_URL = "https://hitmarket.pp.ua"; // заміни на реальний домен/env, якщо є константа в проєкті
 
   const categoryUrl = `${SITE_URL}/category/${slug}${currentPage > 1 ? `?page=${currentPage}` : ""}`;
 

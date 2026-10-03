@@ -17,7 +17,7 @@ import { ProductSchema } from "@/app/components/ProductSchema";
 
 import { pressureWasherConfig } from "@/app/lib/products/pressure-washer";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.v.ua";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hitmarket.pp.ua";
 
 export function generateMetadata(): Metadata {
   const p = pressureWasherConfig;

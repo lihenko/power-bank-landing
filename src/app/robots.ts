@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://hitmarket.v.ua/sitemap.xml",
-    host: "https://hitmarket.v.ua",
+    sitemap: "https://hitmarket.pp.ua/sitemap.xml",
+    host: "https://hitmarket.pp.ua",
   };
 }

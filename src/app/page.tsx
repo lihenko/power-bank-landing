@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: "https://hitmarket.pp.ua",
+    canonical: "https://hitmarket.in.ua",
   },
   robots: {
     index: true,

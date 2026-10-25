@@ -72,7 +72,7 @@ twitter: {
     follow: true,
   },
   verification: {
-    google: "U85hdMhTK1ExKFzQuEkd2uZTDwWSJ1mDE_PKYBnyPdk",
+    google: "Ek-3hHlU-ALpOvS-e0n1A4iNeZZDr03I2tNasr_xVRY",
   },
 };
 

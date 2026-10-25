@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { categorySlugs } from "@/app/lib/category-slugs";
 
-const BASE_URL = "https://hitmarket.pp.ua";
+const BASE_URL = "https://hitmarket.in.ua";
 
 export const revalidate = 86400;
 

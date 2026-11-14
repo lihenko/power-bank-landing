@@ -427,7 +427,7 @@ export async function generateMetadata(
     robots: {
 
       index:
-        product.available === 1,
+        true,
 
       follow:
         true,
